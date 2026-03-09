@@ -1,0 +1,70 @@
+﻿@model SICOVWEB_MCA.Models.DetalleCotizacionCliente
+
+<head>
+    <meta charset="utf-8" />
+    <title>Detalle cotización cliente</title>
+    <script src="~/js/jquery-3.6.0.min.js"></script><!-- -->
+</head>
+
+<h2>Registrar Detalle de la cotización</h2>
+
+<!-- Captura de partidas de productos para la tabla DetalleCotizacionCliente -->
+<form asp-controller="Cotizaciones" asp-action="GuardarDetalle">
+    <!-- Detalle Productos -->
+    <h4>Detalle de Productos</h4>
+    <table id="tablaProductos">
+        <thead>
+            <tr>
+                <th>CódigoProducto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input name="Detalles[0].IdProducto" type="number" /></td>
+                <td><input name="Detalles[0].Cantidad" type="number" /></td>
+                <td><input name="Detalles[0].PrecioUnitario" type="number" step="0.01" /></td>
+                <td><input name="Detalles[0].Total" type="number" step="0.01" readonly /></td>
+                <td><button type="button" onclick="this.parentElement.parentElement.remove()">Eliminar</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" onclick="agregarProducto()">Agregar Otro Producto</button> <br />
+    <!-- Boton para limpiar el formulario -->
+    <button type="reset" id="btnLimpiarProductos">Limpiar productos</button>
+</form>
+
+
+<!-- Funcion para agregar linea de captura en la tabla de productos-->
+<script>
+    //Funcion para mostrar el contenedorTablaProductos si el btnGuardar es click
+    $(document).ready(function () {
+        $("#btnGuardar").click(function (e) {
+            e.preventDefault(); // Evita el envío del formulario
+            $("#contenedorTablaProductos").show(); // Muestra el contenedor de productos
+        });
+     });
+     //Funcion para agregar nuevas filas a la tablaProductos
+        function agregarProducto() {
+        let index = $("#tablaProductos tbody tr").length;
+        let row = `
+            <tr>
+                <td><input name="Detalles[${index}].IdProducto" type="number" /></td>
+                <td><input name="Detalles[${index}].Cantidad" type="number"  /></td>
+                <td><input name="Detalles[${index}].PrecioUnitario" type="number" step="0.01"  /></td>
+                <td><input name="Detalles[${index}].Total" type="number" step="0.01"  readonly /></td>
+                <td><button type="button" onclick="this.parentElement.parentElement.remove()">Eliminar</button></td>
+            </tr>`;
+        $("#tablaProductos tbody").append(row);
+    }
+    function abrirModalCliente() {
+        $("#modalCliente").show();
+    }
+
+    function cerrarModalCliente() {
+        $("#modalCliente").hide();
+    }
+</script>

@@ -1,0 +1,71 @@
+﻿@*
+    Vista para eliminar un producto.
+*@
+@model SICOVWEB_MCA.Models.Producto
+@{
+    ViewData["Title"] = "Eliminar Producto";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Eliminar Producto</h2>
+        <a asp-controller="Productos" asp-action="ListaProductos" class="btn-secundario">
+            <i class="bi bi-arrow-left-circle"></i> Regresar
+        </a>
+    </div>
+    <hr />
+
+    <form asp-controller="Productos" asp-action="EliminarProducto" method="post">
+        <input type="hidden" asp-for="Id_producto" />
+        <div class="form-grid">
+            <div>
+                <label asp-for="Idproveedor">Proveedor</label>
+                <select asp-for="Idproveedor" asp-items="@(new SelectList(ViewBag.listaProveedores, "IdProveedor", "NombreProveedor"))" class="form-control" disabled>
+                    <option value=""> Seleccione un Proveedor</option>
+                </select>
+            </div>
+            <div>
+                <label asp-for="Nombre"></label>
+                <input type="text" asp-for="Nombre" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Marca"></label>
+                <input type="text" asp-for="Marca" class="campo-formulario" disabled />
+
+            </div>
+            <div>
+                <label asp-for="Descripcion"></label>
+                <input type="text" asp-for="Descripcion" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Precio_Compra"></label>
+                <input type="number" asp-for="Precio_Compra" class="campo-formulario" step="0.01" disabled />
+            </div>
+            <div>
+                <label asp-for="Precio_Venta"></label>
+                <input type="number" asp-for="Precio_Venta" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Unidad"></label>
+                <input type="number" asp-for="Unidad" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Margen"></label>
+                <input type="number" asp-for="Margen" class="campo-formulario" step="0.01" disabled />
+            </div>
+             <div>
+                <label asp-for="StockActual"></label>
+                <input type="number" asp-for="StockActual" class="campo-formulario" disabled />
+             </div>  
+             <div>
+                <label asp-for="StockMinimo"></label>
+                <input type="number" asp-for="StockMinimo" class="campo-formulario" disabled />
+             </div>
+             <div></div>
+            <div class="acciones-formulario">
+                <!-- Boton guardar  -->
+                <button type="submit" class="btn-primario"><i class="bi bi-trash"></i> Eliminar</button>               
+            </div>
+        </div>   
+    </form>
+</section>

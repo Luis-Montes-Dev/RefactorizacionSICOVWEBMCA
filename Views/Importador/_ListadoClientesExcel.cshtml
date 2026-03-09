@@ -1,0 +1,122 @@
+﻿@*
+    Vista parcial que muestre el listado de clientes de un excel
+*@
+@using SICOVWEB_MCA.Models
+@{
+}
+<head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" /> <!-- Llama libreria de mensajes alert TOASTR-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+</head>
+@if (TempData["MensajeAlertExito"] != null)
+{
+    <script>
+        toastr.success('@TempData["MensajeAlertExito"]');
+    </script>
+}
+
+@if (TempData["MensajeAlertFalla"] != null)
+{
+    <script>
+        toastr.error('@TempData["MensajeAlertFalla"]');
+    </script>
+}
+
+<form id="formGuardarExcel" asp-controller="Importador" asp-action="GuardarDatosExcel" method="post">
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th>Razón Social</th>
+                <th>RFC</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Calle</th>
+                <th>Número</th>
+                <th>Colonia</th>
+                <th>Localidad</th>
+                <th>Estado</th>
+                <th>País</th>
+                <th>CP</th>
+                <th>Condición Pago</th>
+                <th>Estatus</th>
+                <th>Tipo</th>
+                <th>Fecha Alta</th>
+                <th>Fecha Baja</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Model[i].Razon_Social
+                        <input type="hidden" name="[@i].Razon_Social" value="@Model[i].Razon_Social" />
+                    </td>
+                    <td>
+                        @Model[i].Rfc
+                        <input type="hidden" name="[@i].Rfc" value="@Model[i].Rfc" />
+                    </td>
+                    <td>
+                        @Model[i].Correo
+                        <input type="hidden" name="[@i].Correo" value="@Model[i].Correo" />
+                    </td>
+                    <td>
+                        @Model[i].Telefono
+                        <input type="hidden" name="[@i].Telefono" value="@Model[i].Telefono" />
+                    </td>
+                    <td>
+                        @Model[i].Calle
+                        <input type="hidden" name="[@i].Calle" value="@Model[i].Calle" />
+                    </td>
+                    <td>
+                        @Model[i].Numero
+                        <input type="hidden" name="[@i].Numero" value="@Model[i].Numero" />
+                    </td>
+                    <td>
+                        @Model[i].Colonia
+                        <input type="hidden" name="[@i].Colonia" value="@Model[i].Colonia" />
+                    </td>
+                    <td>
+                        @Model[i].Localidad
+                        <input type="hidden" name="[@i].Localidad" value="@Model[i].Localidad" />
+                    </td>
+                    <td>
+                        @Model[i].Estado
+                        <input type="hidden" name="[@i].Estado" value="@Model[i].Estado" />
+                    </td>
+                    <td>
+                        @Model[i].Pais
+                        <input type="hidden" name="[@i].Pais" value="@Model[i].Pais" />
+                    </td>
+                    <td>
+                        @Model[i].CP
+                        <input type="hidden" name="[@i].CP" value="@Model[i].CP" />
+                    </td>
+                    <td>
+                        @Model[i].Condicion_Pago
+                        <input type="hidden" name="[@i].Condicion_Pago" value="@Model[i].Condicion_Pago" />
+                    </td>
+                    <td>
+                        @Model[i].Estatus
+                        <input type="hidden" name="[@i].Estatus" value="@Model[i].Estatus" />
+                    </td>
+                    <td>
+                        @Model[i].Tipo
+                        <input type="hidden" name="[@i].Tipo" value="@Model[i].Tipo" />
+                    </td>
+                    <td>
+                        @Model[i].Fecha_Alta?.ToString("yyyy-MM-dd")
+                        <input type="hidden" name="[@i].Fecha_Alta" value="@(Model[i].Fecha_Alta?.ToString("yyyy-MM-dd"))" />
+                    </td>
+                    <td>
+                        @Model[i].Fecha_Baja?.ToString("yyyy-MM-dd")
+                        <input type="hidden" name="[@i].Fecha_Baja" value="@(Model[i].Fecha_Baja?.ToString("yyyy-MM-dd"))" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i></button>
+</form>

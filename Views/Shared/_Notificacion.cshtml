@@ -1,0 +1,24 @@
+﻿@* Bloque de bienvenida *@
+@if (TempData["MensajeBienvenida"] is string bienvenida)
+{
+    <div id="alert-bienvenida"
+         class="alert-bienvenida">
+        @bienvenida
+    </div>
+}
+@if (TempData["MensajeAlertExito"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.success('@TempData["MensajeAlertExito"]');
+    </script>
+}
+@if (TempData["MensajeAlertFalla"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.error('@TempData["MensajeAlertFalla"]');
+    </script>
+}

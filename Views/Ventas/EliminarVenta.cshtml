@@ -1,0 +1,168 @@
+﻿@*
+    Vista creada para mostrar el contenido de la venta a eliminar
+*@
+@model SICOVWEB_MCA.Models.Venta
+@{
+    ViewData["Title"] = "Eliminar Venta";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Datos de la venta a eliminar</h2>
+        <a asp-controller="Ventas" asp-action="ListaVentas" class="btn-primario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <hr />
+
+    <form asp-controller="Ventas" asp-action="EliminarVenta" method="post">
+        <input type="hidden" asp-for="Id_venta" />
+
+        <!-- Campos de la cotización -->
+        <div class="form-grid">
+            <div>
+                <label asp-for="Id_Cliente">Empresa</label>
+                <input value="@(Model.Cliente?.Razon_Social ?? "Sin cliente")" class="campo-formulario" disabled />
+            </div>
+            <!-- Aqui va la info de contactos de cliente -->
+            @{
+                if (Model?.Contacto == null)
+                {
+                    <div>
+                        <label asp-for="IdContacto">Contacto de empresa</label>
+                        <input value="Sin contacto" class="campo-formulario" disabled />
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <label asp-for="IdContacto"></label>
+                        <input type="hidden" asp-for="IdContacto" value="@Model.IdContacto" disabled />
+                        <input value="@($"{Model?.Contacto.Nombre} {Model?.Contacto.Apellido_paterno} {Model?.Contacto.Apellido_materno}")" class="campo-formulario" disabled />
+                    </div>
+                }
+            }
+            <div>
+                <label asp-for="Id_Cotizacion">No. Cotización</label>
+                <input type="text" asp-for="Id_Cotizacion" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="IdEmpleado">Vendido por</label>
+                <input type="text" value="@User.Identity.Name" class="campo-formulario" disabled />
+            </div>
+            <!-- Aqui va la info si tiene promocion -->
+            @{
+                if (Model?.Promocion == null)
+                {
+                    <div>
+                        <label asp-for="Id_Promocion">Promoción</label>
+                        <input value="Sin promoción" class="campo-formulario" disabled />
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <label asp-for="Id_Promocion"></label>
+                        <input type="hidden" asp-for="Id_Promocion" value="@Model.Id_Promocion" disabled />
+                        <input value="@($"{Model?.Promocion.Nombre} - {Model?.Promocion.Descripcion}")" class="campo-formulario" disabled />
+                    </div>
+                }
+            }
+            <div>
+                <label asp-for="Fecha_Venta"></label>
+                <input asp-for="Fecha_Venta" type="date" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Fecha_Entrega"></label>
+                <input asp-for="Fecha_Entrega" type="date" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="TipoMoneda"></label>
+                <input type="text" asp-for="TipoMoneda" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="CondicionPago"></label>
+                <input asp-for="CondicionPago" type="text" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Observaciones"></label>
+                <textarea asp-for="Observaciones" class="campo-formulario" rows="3" disabled></textarea>
+            </div>
+            <!-- Aqui va la info si tiene descuento -->
+            @{
+                if (Model?.Descuento == null)
+                {
+                    <div>
+                        <label asp-for="Descuento">Descuento</label>
+                        <input value="Sin descuento" class="campo-formulario" disabled />
+                    </div>
+                }
+                else
+                {
+                    <div>
+                        <label asp-for="Descuento"></label>
+                        <input asp-for="Descuento" value="@Model.Descuento" disabled />
+                    </div>
+                }
+            }
+            <div>
+                <label asp-for="Estatus"></label>
+                <input type="text" asp-for="Estatus" class="campo-formulario" disabled />
+            </div>
+        </div>
+        <div class="tabla-container">
+            <table id="tablaProductos" class="tabla-detalles">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Descripción</th>
+                        <th>Unidades</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Tiempo entrega</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model?.DetalleVentas)
+                    {
+                        <tr>
+                            <td>@d.Producto?.Nombre</td>
+                            <!-- Si el detalle de venta no tiene descripción -->
+                            @if (@d.Descripcion == null)
+                            {
+                                <td>@d.Producto?.Descripcion</td>
+                            }
+                            else
+                            {
+                                <td>@d.Descripcion</td>
+                            }
+                            <!-- Si el detalleVentas no tiene unidad -->
+                            @if (@d.Unidad == null)
+                            {
+                                <td>@d.Producto?.Unidad</td>
+                            }
+                            else
+                            {
+                                <td>@d.Unidad</td>
+                            }
+                            <td>@d.Cantidad</td>
+                            <td>@d.PrecioUnitario</td>
+                            <!-- Si el Tiempo de entrega no fue especificado -->
+                            @if (@d.TiempoEntrega == null)
+                            {
+                                <td>Sin dato</td>
+                            }
+                            else
+                            {
+                                <td>@d.TiempoEntrega</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <div class="acciones-formulario">
+            <!-- Boton eliminar cotizacion -->
+            <button type="submit" class="btn-primario"><i class="bi bi-trash"></i> Eliminar</button>
+        </div>
+    </form>
+</section>

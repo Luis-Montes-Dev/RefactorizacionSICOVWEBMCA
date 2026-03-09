@@ -1,0 +1,111 @@
+﻿@*
+    Pagina de Registro de nuevos productos
+*@
+@model SICOVWEB_MCA.Models.Producto
+@{
+    ViewData["Title"] = "Crear Producto";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<head>
+    <title>Formulario Nuevo Producto</title>
+    <!-- Llamada a jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Registrar Nuevo Producto</h2>
+        <a asp-controller="Productos" asp-action="ListaProductos" class="btn-secundario">
+            <i class="bi bi-arrow-left-circle"></i> Regresar
+        </a>
+    </div>
+    <form asp-controller="Productos" asp-action="CrearProducto" method="post">
+        <input type="hidden" asp-for="Id_producto" value="0" />
+        <div class="form-grid">
+            <div>
+                <label asp-for="Idproveedor">Proveedor</label>
+                <select asp-for="Idproveedor" asp-items="@(new SelectList(ViewBag.listaProveedores, "IdProveedor", "NombreProveedor"))" class="form-control">
+                    <option value=""> Seleccione un Proveedor</option>
+                </select>
+                <span asp-validation-for="Idproveedor" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Nombre"></label>
+                <input type="text" asp-for="Nombre" class="campo-formulario" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Marca"></label>
+                <input type="text" asp-for="Marca" class="campo-formulario" />
+                <span asp-validation-for="Marca" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Descripcion"></label>
+                <input type="text" asp-for="Descripcion" class="campo-formulario" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Precio_Compra"></label>
+                <input type="number" asp-for="Precio_Compra" class="campo-formulario" step="0.01" />
+                <span asp-validation-for="Precio_Compra" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Precio_Venta"></label>
+                <input type="number" asp-for="Precio_Venta" class="campo-formulario" />
+                <span asp-validation-for="Precio_Venta" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Unidad"></label>
+                <select asp-for="Unidad" class="form-control">
+                    <option value="">Seleccione</option>
+                    <option value="Pzs">Piezas</option>
+                    <option value="Kgs">Kilos</option>
+                    <option value="Lts">Litros</option>
+                    <option value="Mts">Metros</option>
+                    <option value="Caja">Cajas</option>
+                    <option value="Hrs">Horas</option>
+                    <option value="Svc">Servicio</option>
+                </select>
+                <span asp-validation-for="Unidad" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Margen"></label>
+                <input type="number" asp-for="Margen" class="campo-formulario" readonly />
+                <span asp-validation-for="Margen" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="StockActual"></label>
+                <input type="number" asp-for="StockActual" class="campo-formulario" />
+                <span asp-validation-for="StockActual" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="StockMinimo"></label>
+                <input type="number" asp-for="StockMinimo" class="campo-formulario" />
+                <span asp-validation-for="StockMinimo" class="text-danger"></span>
+            </div>
+            <div></div>
+            <div class="acciones-formulario">
+                <!-- Boton guardar  -->
+                <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar</button>
+                <!-- Boton limpiar el formulario -->
+                <button type="reset" class="btn-borrar"><i class="bi bi-eraser"></i> Limpiar</button>
+            </div>
+        </div>
+    </form>
+</section>
+<!-- Script para calcular y llenar el campo Margen de ganancia -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Precio_Compra, #Precio_Venta').on('input', function () {
+                var precioCompra = parseFloat($('#Precio_Compra').val()) || 0;
+                var precioVenta = parseFloat($('#Precio_Venta').val()) || 0;
+                if (precioCompra > 0) {
+                    var margen = ((precioVenta - precioCompra) / precioCompra) * 100;
+                    $('#Margen').val(margen.toFixed(2));
+                } else {
+                    $('#Margen').val('');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,115 @@
+﻿@*
+    En esta vista se muestra una lista de contactos de clientes.
+*@
+
+@{
+    ViewData["Title"] = "Lista de Contactos de Cliente";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+@using SICOVWEB_MCA.Models
+@model SICOVWEB_MCA.Helpers.Paginacion<SICOVWEB_MCA.Models.Contacto_cliente>
+
+<section class="contenedor-principal">
+    <h2 class="titulo-seccion">Consulta de Contactos de Clientes</h2>
+
+    <!-- ====== FILTROS DE BÚSQUEDA ====== -->
+    <form asp-controller="ContactosClientes" asp-action="Buscar" method="get" id="formFiltros" class="filtros">
+        <!-- Filtrar por # id contacto -->
+        <div class="filtro-item">
+            <label for="idContacto">No. Contacto:</label>
+            <input type="text" id="idContacto" name="idContacto" class="input-filtro" />
+        </div>
+
+        <!-- Filtrar por Razon social de cliente -->
+        <div class="filtro-item">
+            <label for="razonSocial">Empresa:</label>
+            <input type="text" id="razonSocial" name="razonSocial" class="input-filtro" />
+        </div>
+
+        <!-- Filtrar por fecha de alta -->
+        <div class="filtro-item">
+            <label for="fechaInicio">Fecha inicio:</label>
+            <input type="date" id="fechaInicio" name="fechaInicio" class="input-filtro" />
+        </div>
+
+        <div class="filtro-item">
+            <label for="fechaFin">Fecha fin:</label>
+            <input type="date" id="fechaFin" name="fechaFin" class="input-filtro" />
+        </div>
+
+        <button type="submit" class="btn-buscar">Buscar</button>
+    </form>
+
+<h2>Lista de contactos de clientes</h2>
+<hr />
+<div class="tabla-container">
+<table id="tabla">
+    <thead>
+        <tr>
+            <th>No. Contacto</th>
+            <th>No. Cliente</th>
+            <th>Empresa</th>
+            <th>Nombre</th>
+            <th>Cargo</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Fecha de Alta</th>
+            <th>Fecha de Baja</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var c in Model)
+                {
+                    <tr>
+                        <td>@c.Id_contacto</td>
+                        <td>@c.Id_Cliente</td>
+                        <td>@($"{c.Cliente.Razon_Social}")</td>
+                        <td>@($"{c.Nombre} {c.Apellido_paterno} {c.Apellido_materno}")</td>
+                        <td>@c.Cargo</td>
+                        <td>@c.Correo</td>
+                        <td>@c.Telefono</td>
+                        <td>@c.Fecha_alta.ToString("yyyy-MM-dd")</td>
+                        <td>@c.Fecha_baja?.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <a asp-controller="ContactosClientes" asp-action="Editar" asp-route-id="@c.Id_contacto" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                            <a asp-controller="ContactosClientes" asp-action="Eliminar" asp-route-id="@c.Id_contacto" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?');"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="10" class="sin-datos">No se encontraron resultados.</td></tr>
+            }
+    </tbody>
+</table>
+    </div>
+    <!-- ====== PAGINACIÓN ====== -->
+    <div class="paginacion">
+        @if (Model.TienePaginaAnterior)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-idContacto="@ViewBag.Filtros?.idContacto"
+               asp-route-razonSocial="@ViewBag.Filtros?.razonSocial"               
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">« Anterior</a>
+               
+        }
+
+        <span>Página @Model.PaginaActual de @Model.TotalPaginas</span>
+
+        @if (Model.TienePaginaSiguiente)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual + 1)"
+               asp-route-idContacto="@ViewBag.Filtros?.idContacto"
+               asp-route-razonSocial="@ViewBag.Filtros?.razonSocial"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">Siguiente »</a>
+        }
+    </div>
+</section>

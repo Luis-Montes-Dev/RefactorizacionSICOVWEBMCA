@@ -1,0 +1,43 @@
+﻿@*
+    Vista creada para eliminar un usuario registrado en el sistema
+*@
+@model SICOVWEB_MCA.Models.Usuario
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h3>Datos del Usuario a eliminar</h3>
+        <a asp-controller="Usuarios" asp-action="Buscar" class="btn-secundario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <form asp-controller="Usuarios" asp-action="Eliminar" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-grid">
+            <div>
+                <label asp-for="Id">No. Usuario</label>
+                <input asp-for="Id" class="campo-formulario" readonly />
+            </div>
+            <div>
+                <label asp-for="EmpleadoId">No. de empleado</label>
+                <input asp-for="EmpleadoId" class="campo-formulario" readonly />
+            </div>
+            <div>
+                <label asp-for="CorreoUsuario">Correo electrónico</label>
+                <input asp-for="CorreoUsuario" class="campo-formulario" readonly />
+            </div>
+            <div>
+                <label asp-for="TipoUsuario">Tipo de usuario</label>
+                <input asp-for="TipoUsuario" class="campo-formulario" readonly />
+            </div>
+        </div>
+        <!-- Botonera -->
+        <div class="acciones-formulario">
+            <!-- Boton guardar  -->
+            <button type="submit" class="btn-primario"><i class="bi bi-trash"></i> Eliminar</button>
+            <!-- Boton cancelar -->
+
+        </div>
+    </form>
+</section>
+

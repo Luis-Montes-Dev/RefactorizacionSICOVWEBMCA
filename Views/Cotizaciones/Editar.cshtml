@@ -1,0 +1,283 @@
+﻿@{
+    ViewData["Title"] = "Editar Cotización";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+@model SICOVWEB_MCA.Models.Cotizacion
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Editar Cotización</h2>
+        <a asp-controller="Cotizaciones" asp-action="Consultar" class="btn-secundario">
+            <i class="bi bi-arrow-left"></i> Regresar
+        </a>
+    </div>
+    <hr />
+
+    <form asp-controller="Cotizaciones" asp-action="Editar" method="post">
+        <input type="hidden" asp-for="IdCotizacion" />
+        <div class="form-grid">
+            <div>
+                <label asp-for="IdCliente">Empresa</label>
+                <input type="hidden" asp-for="IdCliente" value="@Model.IdCliente" />
+                <input value="@Model.Cliente.Razon_Social" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="IdContacto">Contacto de empresa</label>
+                @if (Model.Contacto == null)
+                {
+                    <input value="Sin contacto" readonly class="campo-formulario" />
+                }
+                else
+                {
+                    <input type="hidden" asp-for="IdContacto" value="@Model.IdContacto" />
+                    <input value="@($"{Model.Contacto.Nombre} {Model.Contacto.Apellido_paterno} {Model.Contacto.Apellido_materno}")" class="campo-formulario" disabled />
+                }
+            </div>
+            <div>
+                <label asp-for="IdEmpleado2">Generado por</label>
+                <input type="hidden" asp-for="IdEmpleado2" value="@Model.IdEmpleado2" />
+                <input type="text" value="@User.Identity.Name" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Fecha"></label>
+                <input asp-for="Fecha" type="date" class="campo-formulario" readonly />
+            </div>
+            <div>
+                <label asp-for="FechaVigencia"></label>
+                <input asp-for="FechaVigencia" type="date" class="campo-formulario" />
+            </div>
+            <div>
+                <label asp-for="TipoMoneda"></label>
+                <select asp-for="TipoMoneda" class="form-control">
+                    <option value="">Seleccione un Tipo de Moneda</option>
+                    <option value="MXN">MXN - Peso Mexicano</option>
+                    <option value="USD">USD - Dólar Americano</option>
+                </select>
+            </div>
+            <div>
+                <label asp-for="CondicionPago"></label>
+                <input asp-for="CondicionPago" type="text" class="campo-formulario" />
+            </div>
+            <div>
+                <label asp-for="Estatus"></label>
+                <select asp-for="Estatus" class="campo-formulario">
+                    <option value="Nueva">Nueva</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Aceptada">Aceptada</option>
+                    <option value="Rechazada">Rechazada</option>
+                </select>
+            </div>
+
+            <div style="grid-column: 1 / span 2;">
+                <label asp-for="Comentario"></label>
+                <textarea asp-for="Comentario" class="campo-formulario" rows="3"></textarea>
+            </div>
+
+        </div>
+
+        <br />
+        <div class="tabla-container">
+            <h4>Detalles de productos</h4>
+            <table id="tablaProductos">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Descripción</th>
+                        <th>Unidades</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Tiempo entrega</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        var detalles = Model.Detalles.ToList();
+                    }
+                    @for (int i = 0; i < detalles.Count; i++)
+                    {
+                        var detalle = detalles[i];
+                        <tr>
+                            <td>
+                                <input type="text" class="campo-formulario producto-autocomplete"
+                                       data-index="@i"
+                                       value="@detalle.Producto?.Nombre" />
+                                <input type="hidden" name="Detalles[@i].IdProducto" value="@detalle.IdProducto" class="idproducto-hidden" />
+                                <input type="hidden" name="Detalles[@i].IdDetalle" value="@detalle.IdDetalle" />
+                                <input type="hidden" name="Detalles[@i].IdCotizacion" value="@Model.IdCotizacion" />
+                                <input type="hidden" class="eliminar-flag" name="Detalles[@i].Eliminar" value="false" />
+                            </td>
+                            <td>
+                                <input name="Detalles[@i].Descripcion" type="text"
+                                       class="campo-formulario descripcion"
+                                       value="@detalle.Descripcion" />
+                            </td>
+                            <td>
+                                <select name="Detalles[@i].Unidad" class="form-control unidad">
+                                    <option value="Pzs" selected='@(detalle.Unidad == "Pzs" ? "selected" : null)'>Piezas</option>
+                                    <option value="Mts" selected='@(detalle.Unidad == "Mts" ? "selected" : null)'>Metros</option>
+                                    <option value="Kgs" selected='@(detalle.Unidad == "Kgs" ? "selected" : null)'>Kilogramos</option>
+                                    <option value="Lts" selected='@(detalle.Unidad == "Lts" ? "selected" : null)'>Litros</option>
+                                    <option value="Svc" selected='@(detalle.Unidad == "Svc" ? "selected" : null)'>Servicio</option>
+                                </select>
+
+                            </td>
+                            <td>
+                                <input name="Detalles[@i].Cantidad" type="number"
+                                       class="campo-formulario"
+                                       value="@detalle.Cantidad" />
+                            </td>
+                            <td>
+                                <input name="Detalles[@i].PrecioUnitario" type="number" step="0.01"
+                                       class="campo-formulario precio"
+                                       value="@detalle.PrecioUnitario" />
+                            </td>
+                            <td>
+                                <input name="Detalles[@i].TiempoEntrega" type="text"
+                                       class="campo-formulario"
+                                       value="@detalle.TiempoEntrega" />
+                            </td>
+                            <td>
+                                <button type="button" class="btnEliminar btn-borrar">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+        <div class="acciones-detalle">
+            <button type="button" id="btnAgregarFila" class="btn-primario" style="margin-top:10px;"><i class="bi bi-plus-circle"> Agregar producto</i></button>
+        </div>
+        <br />
+        <div class="acciones-formulario">
+        
+            <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar</button>
+        
+        </div>
+    </form>
+</section>
+<script>
+    let listaProductos = [];
+
+    $(document).ready(function () {
+        // Cargar lista de productos
+        $.getJSON('@Url.Action("GetProductos", "Cotizaciones")', function (data) {
+            listaProductos = data;
+        });
+
+        // Eliminar: marcar bandera y ocultar
+        $('#tablaProductos').on('click', '.btnEliminar', function () {
+            const row = $(this).closest('tr');
+            row.find('input.eliminar-flag').val(true);
+            row.hide();
+        });
+
+        // Agregar fila
+        $('#btnAgregarFila').click(function () {
+            let index = $("#tablaProductos tbody tr").length;
+            let row = `
+                <tr>
+                    <td>
+                        <input type="text" class="campo-formulario producto-autocomplete" data-index="${index}" placeholder="Escribe el nombre del producto" />
+                        <input type="hidden" name="Detalles[${index}].IdProducto" class="idproducto-hidden" />
+                        <input type="hidden" name="Detalles[${index}].IdDetalle" value="0" />
+                        <input type="hidden" name="Detalles[${index}].IdCotizacion" value="@Model.IdCotizacion" />
+                        <input type="hidden" class="eliminar-flag" name="Detalles[${index}].Eliminar" value="false" />
+                    </td>
+                    <td><input name="Detalles[${index}].Descripcion" type="text" class="campo-formulario descripcion" /></td>
+                    <td>
+                        <select name="Detalles[${index}].Unidad" class="form-control unidad">
+                            <option value="">Seleccione unidades</option>
+                            <option value="Pzs">Piezas</option>
+                            <option value="Mts">Metros</option>
+                            <option value="Kgs">Kilogramos</option>
+                            <option value="Lts">Litros</option>
+                            <option value="Svc">Servicio</option>
+                        </select>
+                    </td>
+                    <td><input name="Detalles[${index}].Cantidad" type="number" class="campo-formulario" /></td>
+                    <td><input name="Detalles[${index}].PrecioUnitario" type="number" step="0.01" class="campo-formulario precio" /></td>
+                    <td><input name="Detalles[${index}].TiempoEntrega" type="text" class="campo-formulario" /></td>
+                    <td><button type="button" class="btnEliminar btn-borrar"><i class="bi bi-trash"></i></button></td>
+                </tr>`;
+            $("#tablaProductos tbody").append(row);
+        });
+
+        // Autocomplete
+        $(document).on("input", ".producto-autocomplete", function () {
+            const $input = $(this);
+            const index = $input.data("index");
+            const valor = $input.val().toLowerCase();
+            const sugerenciasId = "sugerencias-" + index;
+
+            if ($("#" + sugerenciasId).length === 0) {
+                $input.after(`<div id="${sugerenciasId}" class="sugerencias"></div>`);
+            }
+            const $cont = $("#" + sugerenciasId);
+            $cont.empty();
+
+            if (valor.length < 2) return;
+
+            const filtrados = listaProductos.filter(p =>
+                (p.nombreProducto || "").toLowerCase().includes(valor)
+            );
+
+            filtrados.forEach(p => {
+                $cont.append(`
+                    <div class="opcion"
+                         data-id="${p.idProducto}"
+                         data-desc="${p.descripcion}"
+                         data-unidad="${p.unidad}"
+                         data-precio="${p.precioVenta}"
+                         data-index="${index}">
+                         ${p.nombreProducto}
+                    </div>
+                `);
+            });
+        });
+
+        // Seleccionar opción
+        $(document).on("click", ".opcion", function () {
+            const $op = $(this);
+            const index = $op.data("index");
+            const $row = $(`.producto-autocomplete[data-index='${index}']`).closest("tr");
+
+            $row.find(".producto-autocomplete").val($op.text());
+            $row.find(".idproducto-hidden").val($op.data("id"));
+            $row.find(".descripcion").val($op.data("desc"));
+            $row.find(".unidad").val($op.data("unidad"));
+            $row.find(".precio").val($op.data("precio"));
+
+            if ($op.data("unidad") === "Svc" || $op.text().toLowerCase().includes("servicio")) {
+                $row.find(".descripcion, .precio").prop("readonly", false);
+            } else {
+                $row.find(".descripcion, .precio").prop("readonly", true);
+            }
+
+            $("#sugerencias-" + index).empty();
+        });
+
+        // Cambiar a servicio manual
+        $(document).on("change", ".unidad", function () {
+            const $unidad = $(this);
+            const $row = $unidad.closest("tr");
+
+            if ($unidad.val() === "Svc") {
+                $row.find(".descripcion, .precio").prop("readonly", false).val("");
+                $row.find(".idproducto-hidden").val("");
+            } else {
+                $row.find(".descripcion, .precio").prop("readonly", true);
+            }
+        });
+    });
+</script>

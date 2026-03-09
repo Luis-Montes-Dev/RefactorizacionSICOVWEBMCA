@@ -1,0 +1,176 @@
+﻿@*
+    Vista para mostrar un reporte de datos de un cliente
+*@
+@using SICOVWEB_MCA.Models
+@model SICOVWEB_MCA.Models.Proveedor
+@{
+    ViewData["Title"] = "Reporte de proveedor";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Reporte de proveedor</h2>
+        <a asp-controller="Proveedores" asp-action="ListaProveedores" class="btn-secundario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+<hr />
+
+    <h2>@Model.Razon_social</h2>
+
+    <p><strong>RFC:</strong> @Model.Rfc</p>
+    <p><strong>Correo:</strong> @Model.Correo</p>
+    <p><strong>Teléfono:</strong> @Model.Telefono</p>
+    <p><strong>Dirección:</strong> @($"{Model.Calle} {Model.Numero}, {Model.Colonia}, {Model.Localidad}, {Model.Estado}, {Model.Pais}, CP: {Model.CP}")</p>
+    <p><strong>Condición de Pago:</strong> @Model.Condicion_pago</p>
+    <p><strong>Estatus del proveedor:</strong> @Model.Estatus</p>
+    <p><strong>Fecha de Alta:</strong> @Model.Fecha_alta.ToString("dd-MM-yyyy")</p>
+
+    <h2>Lista de cotizaciones</h2>
+    <hr />
+    <div class="tabla-container">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>No. Cotización</th>
+                    @* <th>Proveedor</th> *@
+                    <th>Empleado</th>
+                    <th>Precio Total</th>
+                    <th>Fecha</th>
+                    <th>Fecha Vigencia</th>
+                    <th>Estatus</th>
+                    <th>Tipo Moneda</th>
+                    <th>Condiciones de Pago</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Cotizaciones != null && Model.Cotizaciones.Any())
+                {
+                    foreach (var item in Model.Cotizaciones)
+                    {
+                        <tr>
+                            <td>@item.Id_cotizacion</td>
+                            @* <td>@item.Proveedor?.Razon_social</td> *@
+                            <td>@item.Empleado?.Nombre</td>
+                            <td>@item.Precio_total.ToString("C2")</td>
+                            <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Fecha_Vigencia.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Estatus</td>
+                            <td>@item.Tipo_Moneda</td>
+                            <td>@item.Condiciones_Pago</td>
+                            <td class="acciones">
+                                @* <a asp-action="Editar" asp-route-id="@item.Id_cotizacion" class="btn-accion editar">✏️</a>
+                                <a asp-action="Eliminar" asp-route-id="@item.Id_cotizacion" class="btn-accion eliminar" onclick="return confirm('¿Deseas eliminar esta cotización?');">🗑️</a> *@
+                                <a asp-action="VistaCotizacionProveedor" asp-route-id="@item.Id_cotizacion" class="btn-ver"><i class="bi bi-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="10" class="sin-datos">No se encontraron cotizaciones.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <h2>Lista de Compras</h2>
+    <hr />
+    <div class="tabla-container">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>No. Compra</th>
+                    <th>No. Cotización</th>
+                    <th>No. Cotización</th>
+                    <th>Elaboró</th>
+                    <th>Fecha de compra</th>
+                    <th>Tipo Moneda</th>
+                    <th>Total</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Compras != null && Model.Compras.Any())
+                {
+                    @foreach (var c in Model.Compras)
+                    {
+                        <tr>
+                            <td>@c.Id_compra</td>
+                            <td>@c.Id_Cotizacion_prov</td>
+                            <td>@c.Id_Cotizacion_prov</td>
+                            <td>@($"{c.Empleado?.Nombre} {c.Empleado?.Apellido_Paterno} {c.Empleado?.Apellido_Materno}")</td>
+                            <td>@c.Fecha_compra.ToString("dd-MM-yyyy")</td>
+                            <td>@c.Tipo_Moneda</td>
+                            <td>@c.Costo_Total</td>
+                            <td class="acciones">
+                                @* <a asp-controller="Compras" asp-action="EditarCompra" asp-route-id="@c.Id_compra" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                                <a asp-controller="Compras" asp-action="EliminarCompra" asp-route-id="@c.Id_compra" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');"><i class="bi bi-trash"></i></a>
+                                <a asp-controller="Compras" asp-action="VistaCompraPorId" asp-route-id="@c.Id_compra" class="btn-ver"><i class="bi bi-eye"></i></a> *@
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="10" class="sin-datos">No se encontraron compras.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <h2>Lista de Productos</h2>
+    <hr />
+    <div class="tabla-container">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>No. producto</th>
+                    @* <th>No. Proveedor</th>
+                    <th>Razón Social</th> *@
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Descripción</th>
+                    <th>Precio de compra</th>
+                    <th>Precio de venta</th>
+                    <th>Unidades</th>
+                    <th>Margen de ganancia %</th>
+                    <th>Stock Actual</th>
+                    <th>Stock Mínimo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Productos != null && Model.Productos.Any())
+                {
+                    foreach (var p in Model.Productos)
+                    {
+                        <tr>
+                            <td>@p.Id_producto</td>
+                            <!-- Colocar la Razon social del proveedor conociendo su idproveedor -->
+                            @* <td>@p.Idproveedor</td>
+                            <td>@($"{p.Proveedor.Razon_social}")</td> *@
+                            <td>@p.Nombre</td>
+                            <td>@p.Marca</td>
+                            <td>@p.Descripcion</td>
+                            <td>@p.Precio_Compra</td>
+                            <td>@p.Precio_Venta</td>
+                            <td>@p.Unidad</td>
+                            <td>@p.Margen %</td>
+                            <td>@p.StockActual</td>
+                            <td>@p.StockMinimo</td>
+                            <td class="acciones">
+                                <a asp-controller="Productos" asp-action="EditarProducto" asp-route-id="@p.Id_producto" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                                <a asp-controller="Productos" asp-action="EliminarProducto" asp-route-id="@p.Id_producto" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');"><i class="bi bi-trash"></i></a>
+                                <a asp-controller="Productos" asp-action="InfoProducto" asp-route-id="@p.Id_producto" class="btn-ver"><i class="bi bi-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="10" class="sin-datos">No se encontraron productos.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

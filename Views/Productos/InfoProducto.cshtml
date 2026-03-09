@@ -1,0 +1,80 @@
+﻿@*
+    Vista Información detallada de un producto
+*@
+@model SICOVWEB_MCA.Models.Producto
+@{
+    ViewData["Title"] = "Información del Producto";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Información del Producto</h2>
+        <a asp-controller="Productos" asp-action="ListaProductos" class="btn-primario"><i class="bi bi-arrow-return-left"></i> Regresar</a>
+    </div>
+    <hr />
+    <div>
+        <p><strong>No. de producto:</strong> @Model.Id_producto</p>
+        <p><strong>No. Proveedor:</strong> @Model.Idproveedor</p>
+        <p><strong>Razón Social:</strong> @Model.Proveedor.Razon_social</p>
+        <p><strong>Nombre:</strong> @Model.Nombre</p>
+        <p><strong>Marca:</strong> @Model.Marca</p>
+        <p><strong>Descripción:</strong> @Model.Descripcion</p>
+        <p><strong>Precio de compra:</strong> @Model.Precio_Compra</p>
+        <p><strong>Precio de venta:</strong> @Model.Precio_Venta</p>
+        <p><strong>Unidades:</strong> @Model.Unidad</p>
+        <p><strong>Margen de ganancia: </strong> @Model.Margen %</p>
+        <p><strong>Stock Actual:</strong> @Model.StockActual</p>
+        <p><strong>Stock Minimo:</strong> @Model.StockMinimo</p>
+    </div>
+    <br />
+    <div class="acciones-formulario">
+        <a asp-controller="Productos" asp-action="EditarProducto" asp-route-id="@Model.Id_producto" class="btn-primario"><i class="bi bi-pencil-square"></i> Editar</a>
+        <a asp-controller="Productos" asp-action="EliminarProducto" asp-route-id="@Model.Id_producto" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');"><i class="bi bi-trash"></i> Eliminar</a>
+    </div>
+
+    <!-- Tabla con los ultimos movimientos de ese producto provienen de un viewbag cargado en el controlador de esta vista -->
+    <h3>Últimos Movimientos del Producto</h3>
+    <hr />
+    <div class="tabla-container">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Almacén</th>
+                    <th>Tipo de Movimiento</th>
+                    <th>(Compra/Venta)</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Movimientos_Almacen != null && Model.Movimientos_Almacen.Any())
+                {
+                    foreach (var movimiento in Model.Movimientos_Almacen)
+                    {
+                        <tr>
+                            <td>@movimiento.Id_Almacen</td>
+                            <td>@movimiento.Tipo</td>
+                            @if (@movimiento.Tipo.Equals("entrada"))
+                            {
+                                <td>@movimiento.Id_Compra</td>
+                            }
+                            else if (@movimiento.Tipo.Equals("salida"))
+                            {
+                                <td>@movimiento.Id_Venta</td>
+                            }
+                            <td>@movimiento.Cantidad</td>
+                            <td>@movimiento.Fecha.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">No hay movimientos registrados para este producto.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

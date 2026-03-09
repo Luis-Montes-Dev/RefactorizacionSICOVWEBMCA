@@ -1,0 +1,112 @@
+﻿@model SICOVWEB_MCA.Models.Empleado
+@{
+    ViewData["Title"] = "Editar Empleado";
+    Layout = "_Layout_Admin";    
+}
+
+
+<hr />
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Editar empleado</h2>
+        <a asp-controller="Empleados" asp-action="Buscar" class="btn-secundario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <hr />
+    <form asp-controller="Empleados" asp-action="Editar" method="post">
+        <!-- Inputs ocultos de asignacion por default -->
+        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="Estatus" />
+        <div class="form-grid">
+            <div>
+                <label asp-for="Nombre"></label>
+                <input asp-for="Nombre" class="campo-formulario" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Apellido_Paterno"></label>
+                <input asp-for="Apellido_Paterno" class="campo-formulario" />
+                <span asp-validation-for="Apellido_Paterno" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Apellido_Materno"></label>
+                <input asp-for="Apellido_Materno" class="campo-formulario" />
+                <span asp-validation-for="Apellido_Materno" class="text-danger"></span>
+            </div>
+             <div>
+                <label asp-for="Puesto"></label>
+                <input asp-for="Puesto" class="campo-formulario" />
+                <span asp-validation-for="Puesto" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Correo"></label>
+                <input asp-for="Correo" class="campo-formulario" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>    
+            <div>
+                <label asp-for="Telefono"></label>
+                <input asp-for="Telefono" class="campo-formulario" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>    
+            <div>
+                <label asp-for="Calle"></label>
+                <input asp-for="Calle" class="campo-formulario" />
+                <span asp-validation-for="Calle" class="text-danger"></span>
+            </div>    
+            <div>
+                <label asp-for="Numero"></label>
+                <input asp-for="Numero" class="campo-formulario" />
+                <span asp-validation-for="Numero" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Colonia"></label>
+                <input asp-for="Colonia" class="campo-formulario" />
+                <span asp-validation-for="Colonia" class="text-danger"></span>
+            </div>    
+             <div>
+                <label asp-for="Localidad"></label>
+                <input asp-for="Localidad" class="campo-formulario" />
+                <span asp-validation-for="Localidad" class="text-danger"></span>
+             </div>  
+              <div>
+                <label asp-for="Estado"></label>
+                <input asp-for="Estado" class="campo-formulario" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+              </div>  
+               <div>
+                   <label asp-for="Pais"></label>
+                <input asp-for="Pais" class="campo-formulario" />
+                <span asp-validation-for="Pais" class="text-danger"></span>
+               </div>
+            <div>
+                <label asp-for="CP"></label>
+                <input asp-for="CP" class="campo-formulario" />
+                <span asp-validation-for="CP" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="RFC"></label>
+                <input asp-for="RFC" class="campo-formulario" />
+                <span asp-validation-for="RFC" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Estatus"></label>
+                <input type="text" asp-for="Estatus" class="campo-formulario" />
+                <span asp-validation-for="Estatus" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Fecha_Alta"></label>
+                <input asp-for="Fecha_Alta" type="date" class="campo-formulario" readonly />
+                <span asp-validation-for="Fecha_Alta" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Fecha_Baja"></label>
+                <input asp-for="Fecha_Baja" type="date" class="campo-formulario" />
+                <span asp-validation-for="Fecha_Baja" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <!-- BOTONES DE ACCIÓN -->
+        <div class="acciones-formulario">
+            <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar</button>            
+        </div>
+    </form>
+</section>

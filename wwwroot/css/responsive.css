@@ -1,0 +1,214 @@
+﻿/* =======================================================
+   responsive.css - Ajustes responsivos globales
+   ======================================================= */
+
+/* Escala de fuente general */
+@media (max-width: 1200px) {
+    html {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 900px) {
+    html {
+        font-size: 13.5px;
+    }
+}
+
+@media (max-width: 600px) {
+    html {
+        font-size: 13px;
+    }
+}
+
+/* ==== SIDEBAR Y LAYOUT ==== */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .content {
+        margin-left: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+        width: 220px;
+        left: -220px;
+        transition: left 0.3s;
+    }
+
+        .sidebar.activa {
+            left: 0;
+        }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .btn-menu-mobile {
+        display: block;
+        background: #070A9C;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+}
+
+/* ==== TABLAS ==== */
+@media (max-width: 900px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+        table th, table td {
+            font-size: 0.8rem;
+        }
+}
+
+/* ==== TARJETAS DASHBOARD ==== */
+@media (max-width: 1024px) {
+    .tarjeta {
+        width: 45%;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .contenedorTarjetas {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tarjeta {
+        width: 90%;
+        font-size: 0.7rem;
+    }
+}
+
+/* ==== FORMULARIOS ==== */
+@media (max-width: 600px) {
+    form {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    label, input, select, textarea {
+        font-size: 0.95rem;
+    }
+}
+
+/* ==== LOGIN ==== */
+@media (max-width: 600px) {
+    .modal-contenido {
+        background: white;
+        padding: 30px;
+        width: 60%;
+        max-width: 300px;
+        border-radius: 8px;
+        position: relative;
+    }
+
+    .logo {
+        width: 300px;
+        height: auto;
+        margin-top: 80px;
+        margin-bottom: 30px;
+    }
+}
+@media (max-width: 480px) {
+    .modal-contenido {
+        background: white;
+        padding: 30px;
+        width: 40%;
+        max-width: 200px;
+        border-radius: 8px;
+        position: relative;
+    }
+        .modal-contenido .g-recaptcha {
+            transform: scale(0.55);
+            transform-origin: left;
+        }
+
+    .logo {
+        width: 200px;
+        height: auto;
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
+}
+    /* ==== BOTONES ==== */
+    @media (max-width: 480px) {
+        button, .btn-primario, .btn-secundario, .btn-borrar, .btn-ver {
+            font-size: 0.9rem;
+            padding: 6px 10px;
+        }
+    }
+
+    /* ==== MENÚ RESPONSIVO ==== */
+    @media (max-width: 768px) {
+        .btn-menu-mobile {
+            display: block;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 60px; /* debajo del header */
+            left: -250px;
+            width: 250px;
+            height: calc(100vh - 60px);
+            background: #051139;
+            color: white;
+            overflow-y: auto;
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+            .sidebar.activa {
+                left: 0;
+            }
+
+        .content {
+            margin-left: 0;
+        }
+
+        /* Oscurecer el fondo cuando el menú esté activo */
+        .overlay-menu {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 60px);
+            background: rgba(0,0,0,0.4);
+            z-index: 900;
+        }
+
+            .overlay-menu.activa {
+                display: block;
+            }
+    }
+
+/* Responsivo para móvil */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* una columna en pantallas pequeñas */
+    }
+
+    .contenedor-botones {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+        .contenedor-botones button,
+        .contenedor-botones a {
+            width: 100%;
+            text-align: center;
+        }
+}

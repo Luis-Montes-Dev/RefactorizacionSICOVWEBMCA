@@ -1,0 +1,92 @@
+﻿@*
+    Vista parcial que muestre el listado de productos de un excel
+*@
+@using SICOVWEB_MCA.Models
+@{
+}
+<head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" /> <!-- Llama libreria de mensajes alert TOASTR-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+</head>
+@if (TempData["MensajeAlertExito"] != null)
+{
+    <script>
+        toastr.success('@TempData["MensajeAlertExito"]');
+    </script>
+}
+
+@if (TempData["MensajeAlertFalla"] != null)
+{
+    <script>
+        toastr.error('@TempData["MensajeAlertFalla"]');
+    </script>
+}
+
+<form id="formGuardarExcel" asp-controller="Importador" asp-action="GuardarDatosProductos" method="post">
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th>Proveedor</th>
+                <th>Nombre</th>
+                <th>Marca</th>
+                <th>Descripción</th>
+                <th>Precio_Compra</th>
+                <th>Precio_Venta</th>
+                <th>Unidad</th>
+                <th>Margen</th>                
+                <th>Stock Actual</th>                
+                <th>Stock Mínimo</th>                
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Model[i].Idproveedor
+                        <input type="hidden" name="[@i].Idproveedor" value="@Model[i].Idproveedor" />
+                    </td>
+                    <td>
+                        @Model[i].Nombre
+                        <input type="hidden" name="[@i].Nombre" value="@Model[i].Nombre" />
+                    </td>
+                    <td>
+                        @Model[i].Marca
+                        <input type="hidden" name="[@i].Marca" value="@Model[i].Marca" />
+                    </td>
+                    <td>
+                        @Model[i].Descripcion
+                        <input type="hidden" name="[@i].Descripcion" value="@Model[i].Descripcion" />
+                    </td>
+                    <td>
+                        @Model[i].Precio_Compra
+                        <input type="hidden" name="[@i].Precio_Compra" value="@Model[i].Precio_Compra" />
+                    </td>
+                    <td>
+                        @Model[i].Precio_Venta
+                        <input type="hidden" name="[@i].Precio_Venta" value="@Model[i].Precio_Venta" />
+                    </td>
+                    <td>
+                        @Model[i].Unidad
+                        <input type="hidden" name="[@i].Unidad" value="@Model[i].Unidad" />
+                    </td>
+                    <td>
+                        @Model[i].Margen.ToString("F2")
+                        <input type="hidden" name="[@i].Margen" value="@Model[i].Margen" />
+                    </td>
+                    <td>
+                        @Model[i].StockActual
+                        <input type="hidden" name="[@i].StockActual" value="@Model[i].StockActual" />
+                    </td>
+                    <td>
+                        @Model[i].StockMinimo
+                        <input type="hidden" name="[@i].StockMinimo" value="@Model[i].StockMinimo" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <button type="submit" class="btn-primario">Guardar en BD</button>
+</form>

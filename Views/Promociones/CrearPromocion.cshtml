@@ -1,0 +1,60 @@
+﻿@*
+    Vista formulario para crear una nueva promoción
+*@
+@{
+    ViewData["Title"] = "Crear Promoción";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+@model SICOVWEB_MCA.Models.Promocion
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Registrar Nueva Promoción</h2>
+        <a asp-controller="Promociones" asp-action="Buscar" class="btn-primario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <hr />
+
+    <form asp-controller="Promociones" asp-action="CrearPromocion" method="post" id="formCrearPromocion">
+        <input type="hidden" asp-for="Id_promocion" value="0" />
+        <div class="form-grid">
+            <div>
+                <label asp-for="Id_Campania">Campaña de Marketing</label>
+                <select asp-for="Id_Campania" class="campo-formulario" asp-items="@(new SelectList(ViewBag.Campanias, "Id_Campania", "Nombre"))">
+                    <option value="">-- Seleccione una campaña --</option>
+                </select>
+                <span asp-validation-for="Id_Campania" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Nombre">Nombre de la Promoción</label>
+                <input type="text" asp-for="Nombre" class="campo-formulario" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Descripcion">Descripción</label>
+                <textarea asp-for="Descripcion" class="campo-formulario"></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Descuento">Descuento (%)</label>
+                <input type="number" asp-for="Descuento" class="campo-formulario" />
+                <span asp-validation-for="Descuento" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Fecha_Inicio">Fecha de Inicio</label>
+                <input type="date" asp-for="Fecha_Inicio" class="campo-formulario" />
+                <span asp-validation-for="Fecha_Inicio" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Fecha_Fin">Fecha de Fin</label>
+                <input type="date" asp-for="Fecha_Fin" class="campo-formulario" />
+                <span asp-validation-for="Fecha_Fin" class="text-danger"></span>
+            </div>
+        </div>
+            <!-- Botonera -->
+            <div class="acciones-formulario">
+                <!-- Boton guardar  -->
+                <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar</button>
+                <!-- Boton limpiar el formulario -->
+                <button type="reset" class="btn-borrar"><i class="bi bi-eraser"></i> Limpiar</button>
+            </div>        
+    </form>
+</section>

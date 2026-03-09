@@ -1,0 +1,549 @@
+/* En este archivo se deben colocar los estilos que conciernen a la pagina en general
+    Main
+    Body ok
+    Footer
+    modal_login
+    Botones
+    a-links
+    parrafos p
+    titulos h1, h2, h3, h4, h5, h6
+
+*/
+
+/*html {
+  font-size: 14px;
+}*/
+
+/*@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}*/
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+
+body {
+    background-image: url('/images/Fondo_Logo_Circular.png'); /*Ruta relativa imagen de fondo*/
+    /*background-color: #edf2f4;  Color de fondo claro */
+    background-size: cover; /* Para que cubra toda la pantalla */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    /*display: flex;*/
+    min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la ventana */
+    position: relative; /* Para que el footer se posicione correctamente */
+    padding: 0;
+    /*padding-bottom: 50px; *//* Espacio para el footer */
+    font-family: 'Segoe UI', sans-serif;
+    color: #17202a; /* Color de texto por defecto */
+}
+
+/* Estilos para Textos */
+h1 {
+    color: #17202a;
+    font-size: xx-large;
+}
+
+h2 {
+    color: #17202a;
+}
+p {
+    color: #17202a;
+    font-size: large;
+}
+a {
+    font-size: 1.5rem;
+    text-decoration: none; /* Sin subrayado */
+}
+footer {
+   
+    background-color: transparent; /*Nuevas reglas por problema con footer 09-10-25*/
+    color: #17202a;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative; /* ya no absolute */
+    bottom: 0;
+}
+.inicio-container {
+    background-color: transparent; /* Fondo transparente*/
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;    
+    padding: 20px;
+}
+
+.titulo {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #17202a; /* Color de texto blanco #fff, color Rojo falun #7c342b */
+}
+
+.logo {
+    width: 400px;
+    height: auto;
+    margin-bottom: 30px;
+}
+
+/* Estilos de los botones en general */
+button {
+    background-color: #ec7063;
+    color: white;
+    /*padding: 10px 20px;*/
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    button[type="submit"] {
+        align-self: center;
+    }
+.btn-sesion {
+    padding: 8px 15px;
+    background-color: #070A9C; /*#007ACC ,#105e93 , #ec7063*/
+    /*font-family: 'Segoe UI', sans-serif;*/
+    color: #ecf0f1;
+    border: none;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-block;
+}
+
+.btn-primario {
+    padding: 8px 15px;
+    background-color: #070A9C; /*#007ACC ,#105e93 , #ec7063*/
+    /*font-family: 'Segoe UI', sans-serif;*/
+    color: #ecf0f1;
+    border: none;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-block;
+}
+
+    .btn-primario:hover {
+        background-color: #005fa3;
+    }
+
+.btn-secundario {
+    padding: 8px 15px;
+    background-color: #070A9C;
+    color: #ecf0f1;
+    border: none;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-block;
+}
+
+    .btn-secundario:hover {
+        background-color: #005fa3;
+    }
+.btn-editar {
+    padding: 8px 15px;
+    background-color: #070A9C;
+    color: #ecf0f1;
+    border: none;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-block;
+    margin: 0px 5px;
+}
+.btn-editar:hover {
+    background-color: cornflowerblue;
+}
+
+.btn-borrar {
+    padding: 8px 15px;
+    background-color: #C82909;
+    color: #ecf0f1;
+    border: none;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-block;
+    margin: 0px 5px;
+}
+
+    .btn-borrar:hover {
+        background-color: darkorange;
+    }
+
+.btn-ver {
+    padding: 8px 15px;
+    background-color: green;
+    color: #ecf0f1;
+    border: none;
+    font-size: 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-block;
+    margin: 0px 5px;
+}
+
+    .btn-ver:hover {
+        background-color: lightgreen;
+    }
+.btn-icono {
+    width: 70px;
+    height: 70px;
+    display: block;
+    border-radius: 50%;
+    color: #fff;
+    background-color: #000;
+    text-decoration: none;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Estilos de los links */
+.a-link {
+    padding: 4px 12px;
+    background-color: #ec7063;
+    color: #ecf0f1;
+    text-decoration: none;
+    border: none;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+    .a-link:hover {
+        background-color: #005fa3;
+    }
+
+
+/* Modal */
+
+.modal-fondo {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-contenido {
+    background: white;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
+}
+
+    .modal-contenido h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .modal-contenido label {
+        display: block;
+        margin: 10px 0 5px;
+        text-align: left;
+        color: #555;
+    }
+
+    .modal-contenido input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .modal-contenido .ingresar {
+        width: 100%;
+        padding: 10px;
+        background-color: #007ACC;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .modal-contenido button:hover {
+            background-color: #005fa3;
+        }
+
+    .modal-contenido .cerrar {
+
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: red;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .cerrar:hover {
+            transform: scale(1.1);
+        }
+
+
+        .link {
+    display: block;
+    margin-top: 10px;
+    text-align: right;
+    font-size: 0.9rem;
+    color: #007ACC;
+    text-decoration: none;
+}
+
+    .link:hover {
+        text-decoration: underline;
+    }
+
+/* Estilos para mensajes de tipo alert de falla */
+.alert-warning {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1100; /* por encima de todo */
+    padding: .75rem 1.25rem;
+    border-radius: .5rem;
+    background: #fa2813; /* Rojo */
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+    transition: opacity .4s ease, transform .4s ease;
+}
+
+/* Animación de salida */
+.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+@media (max-width: 640px) {
+    .mensaje-alert {
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+    }
+}
+
+/* Estilos para mensajes de tipo alert de exito */
+.alert-success {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1100; /* por encima de todo */
+    padding: .75rem 1.25rem;
+    border-radius: .5rem;
+    background: #38b000; /* verde suave */
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,.1);
+    transition: opacity .4s ease, transform .4s ease;
+}
+
+/* Animación de salida */
+.fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+@media (max-width: 640px) {
+    .alert-bienvenida {
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+    }
+}
+
+/* Animaciones para Dropdown menu */
+
+.dropmenu {
+    position: relative; /* contexto para los submenús */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .dropmenu li {
+        position: relative;
+    }
+
+    .dropmenu a {
+        display: block;
+        padding: 12px 15px;
+        color: white;
+        text-decoration: none;
+    }
+
+        .dropmenu a:hover {
+            background-color: #444;
+        }
+
+/* Estilo del submenú */
+.dropsubmenu {
+    
+    z-index: 2000; /* Asegura que esté por encima de otros elementos */
+    display: none;
+    position: relative; /* cambia de absolute a relative */
+    background-color: #0a1b4f;
+    padding-left: 20px;
+    border-left: 2px solid #3a4b8a;
+}
+
+    .dropsubmenu li a {
+        padding: 10px 15px;
+    }
+
+/* Mostrar submenú al hacer hover */
+.dropmenu li:hover > .dropsubmenu {
+    display: block;
+}
+
+/*Nuevas reglas por problema con footer 09-10-25*/
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1; /* Empuja el footer hacia abajo */
+}
+
+footer {
+    flex-shrink: 0;
+}
+
+
+/* ==== AJUSTES DE ESCALA GLOBAL ==== */
+
+/* Tamaño base más pequeño y adaptable */
+html {
+    font-size: 15px;
+}
+
+@media (max-width: 1200px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 13px;
+    }
+}
+
+/* Ajustar textos globales */
+/*body, p, a, label, input, button, select, textarea {
+    font-size: 1rem;
+    line-height: 1.4;
+}*/
+
+/* Evitar textos gigantes */
+/*h1 {
+    font-size: 1.8rem;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}*/
+
+/* Ajustar botones a un tamaño razonable */
+/*button, .btn-primario, .btn-secundario, .btn-editar, .btn-borrar, .btn-ver {
+    font-size: 0.8rem !important;
+    padding: 3px 6px !important;
+}*/
+
+/* ==== SIDEBAR Y CONTENIDO ==== */
+
+.sidebar {
+    width: 220px;
+    min-width: 200px;
+}
+
+.content {
+    margin-left: 200px;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+/*@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        width: 180px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .sidebar.activa {
+            transform: translateX(0);
+        }*/
+
+   /* .content {
+        margin-left: 0;
+    }*/
+}
+
+/* ==== TABLAS RESPONSIVAS ==== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+    table th, table td {
+        padding: 8px;
+        word-wrap: break-word;
+    }
+
+.tabla-container, .contenido {
+    overflow-x: auto;
+}
+
+/* ==== CONTENIDO PRINCIPAL ==== */
+
+.contenido {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* ==== FOOTER ==== */
+
+footer {
+    font-size: 0.9rem;
+    padding: 10px;
+}

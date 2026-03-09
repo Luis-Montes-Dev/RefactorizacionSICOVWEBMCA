@@ -1,0 +1,412 @@
+﻿/* En este archivo se deben colocar los estilos de los formularios
+    estandarizar los formularios de captura de datos:
+    label
+    inputs
+    estandarizar las tablas de visualización de datos
+    table th
+    table td
+    table tr
+*/
+
+
+label {
+    color: #17202a;
+    font-size: medium;
+}
+
+.campo-formulario {
+    width: 400px;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.campo-formularioCantidad {
+    width: 80px;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+    .campo-formulario:focus {
+        border-color: #168ef3;
+    }
+
+.form-control { /*Se refiere a los selectores desplegables de formularios*/
+    width: 418px;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+/* Formulario de registro de usuarios */
+
+.formulario-registro{
+    width: 400px;
+    background: #17202a; /*Color de fondo */
+    padding: 30px;
+    margin: auto;
+    margin-top: 100px;
+    border-radius:4px;
+    font-family: Calibri;
+}
+    .formulario-registro h4 {
+        font-size: 24px;
+        color: white;
+        margin-bottom: 20px;
+    }
+
+.controls {
+    width: 100%;
+    background-color: #051139; /* Color de fondo */
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    border: 1px solid #1cafb9;
+    font-family: Calibri;
+    font-size: 16px;
+}
+   
+/* Estilos de la tabla de usuarios */
+#tabla {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: ghostwhite;
+}
+
+    #tabla th, #tabla td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    #tabla tr:nth-child(even) {
+        background-color: ghostwhite;
+    }
+
+    #tabla tr:hover {
+        background-color: #ddd;
+    }
+
+    #tabla th {
+        font-size: 0.8rem;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #051139;
+        color: white;
+    }
+
+    #tabla td {
+        color: #17202a;
+        font-size: 0.7rem;
+    }
+
+/* Estilos de la tabla de productos */
+#tablaProductos {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: ghostwhite;
+}
+
+    #tablaProductos th, #tablaProductos td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    #tablaProductos tr:nth-child(even) {
+        background-color: ghostwhite;
+    }
+
+    #tablaProductos tr:hover {
+        background-color: #ddd;
+    }
+
+    #tablaProductos th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #051139;
+        color: white;
+    }
+
+    #tablaProductos td {
+        color: #17202a;
+    }
+    #tablaProductos input {
+        width: 80% !important;
+        padding: 10px !important;
+        margin: 5px 0 !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+    }
+/* Fondo modal y centrado */
+.modalRegistro {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Contenido del formulario */
+.modal-contenido {
+    background-color: #222; /* Fondo oscuro */
+    color: white; /* Letras blancas */
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+    /* Inputs de texto */
+    .modal-contenido input[type="email"],
+    .modal-contenido input[type="password"],
+    .modal-contenido input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        background-color: #333;
+        color: white;
+    }
+
+    /* Etiquetas */
+    .modal-contenido label {
+        display: block;
+        font-size: 18px;
+        margin-top: 15px;
+        text-align: left;
+        color: #f0f0f0;
+    }
+
+
+/* Botón de cerrar */
+.cerrar {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background-color: transparent;
+    color: white;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilos para las sugerencias en (tablaProductos) Detalles productos de cotizaciones*/
+
+.sugerencias {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 250px;
+}
+
+.opcion {
+    padding: 5px;
+    cursor: pointer;
+}
+
+    .opcion:hover {
+        background: #f0f0f0;
+    }
+
+/*ESTILOS CSS de Consulta Cotizaciones Proveedores*/
+
+.contenedor-principal {
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+.titulo-seccion {
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    color: #333;
+}
+
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filtro-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+}
+
+.input-filtro {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.btn-buscar {
+    align-self: flex-end;
+    padding: 8px 14px;
+    background-color: #0078D7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+    .btn-buscar:hover {
+        background-color: #005fa3;
+    }
+
+.tabla-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tabla-datos {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+    .tabla-datos thead {
+        background-color: #0078D7;
+        color: white;
+    }
+
+    .tabla-datos th, .tabla-datos td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+.acciones {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-accion {
+    padding: 6px 8px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.editar {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.eliminar {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.ver {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.sin-datos {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+/* Diseño responsivo */
+@media (max-width: 900px) {
+    .filtros {
+        flex-direction: column;
+    }
+
+    .filtro-item {
+        width: 100%;
+    }
+
+    .tabla-datos th, .tabla-datos td {
+        font-size: 0.9rem;
+    }
+}
+
+/* Estilos para el comparador de cotizaciones */
+
+.comparacion {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.cotizacion-card {
+    flex: 1;
+    min-width: 420px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.tabla-detalles {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+    .tabla-detalles th, .tabla-detalles td {
+        border: 1px solid #ddd;
+        padding: 6px;
+        text-align: center;
+    }
+
+.btn-detalles {
+    background-color: #1976d2;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-crear {
+    margin-top: 1rem;
+    background-color: #2e7d32;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+}
+
+.detalles.oculto {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .comparacion {
+        flex-direction: column;
+    }
+}

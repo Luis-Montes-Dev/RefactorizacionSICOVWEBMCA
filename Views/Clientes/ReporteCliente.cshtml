@@ -1,0 +1,109 @@
+﻿@*
+    Vista para mostrar un reporte de datos de un cliente
+*@
+@using SICOVWEB_MCA.Models
+@{
+    ViewData["Title"] = "Reporte de cliente";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+
+
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h1>Reporte de cliente</h1>
+        <a asp-controller="Clientes" asp-action="Buscar" class="btn-primario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <hr />
+<h2>@Model.Razon_Social</h2>
+
+<p><strong>RFC:</strong> @Model.Rfc</p>
+<p><strong>Correo:</strong> @Model.Correo</p>
+<p><strong>Teléfono:</strong> @Model.Telefono</p>
+<p><strong>Dirección:</strong> @($"{Model.Calle} {Model.Numero}, {Model.Colonia}, {Model.Localidad}, {Model.Estado}, {Model.Pais}, CP: {Model.CP}")</p>
+<p><strong>Condición de Pago:</strong> @Model.Condicion_Pago</p>
+<p><strong>Tipo de Cliente:</strong> @Model.Tipo</p>
+<p><strong>Fecha de Alta:</strong> @Model.Fecha_Alta.ToString("dd-MM-yyyy")</p>
+
+<h2>Lista de cotizaciones</h2>
+<hr />
+    <div class="tabla-container">
+<table id="tabla">
+    <thead>
+        <tr>
+            <th>No. Cotización</th>
+            <th>Empresa</th>
+            <th>Elaboró</th>
+            <th>Fecha creación</th>
+            <th>Fecha vigencia</th>
+            <th>Estatus</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.Cotizaciones)
+        {
+            <tr>
+                <td>@c.IdCotizacion</td>
+                <td>@($"{c.Cliente?.Razon_Social}")</td>
+                <td>@($"{c.Empleado?.Nombre} {c.Empleado?.Apellido_Paterno} {c.Empleado?.Apellido_Materno}")</td>
+                <td>@c.Fecha.ToString("dd-MM-yyyy")</td>
+                <td>@c.FechaVigencia.ToString("dd-MM-yyyy")</td>
+                <td>@c.Estatus</td>
+                <td>
+                    <a asp-controller="Cotizaciones" asp-action="Editar" asp-route-id="@c.IdCotizacion" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                    <a asp-controller="Cotizaciones" asp-action="Eliminar" asp-route-id="@c.IdCotizacion" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta cotización?');"><i class="bi bi-trash"></i></a>
+                    <a asp-controller="Cotizaciones" asp-action="VistaCotizacionPorId" asp-route-id="@c.IdCotizacion" class="btn-ver"><i class="bi bi-eye"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+<br />
+<h2>Lista de Ventas</h2>
+<hr />
+    <div class="tabla-container">
+<table id="tabla">
+    <thead>
+        <tr>
+            <th>No. Orden</th>
+            <th>Empresa</th>
+            <th>No. Cotización</th>
+            <th>Elaboró</th>
+            <th>Fecha de venta</th>
+            <th>Fecha de entrega</th>
+            <th>Estatus</th>
+            <th>Promoción</th>
+            <th>Descuento</th>
+            <th>Total</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Model.Ventas)
+        {
+            <tr>
+                <td>@v.Id_venta</td>
+
+
+                <td>@($"{v.Cliente?.Razon_Social}")</td>
+                <td>@v.Id_Cotizacion</td>
+                <td>@($"{v.Empleado?.Nombre} {v.Empleado?.Apellido_Paterno} {v.Empleado?.Apellido_Materno}")</td>
+                <td>@v.Fecha_Venta.ToString("dd-MM-yyyy")</td>
+                <td>@v.Fecha_Entrega.ToString("dd-MM-yyyy")</td>
+                <td>@v.Estatus</td>
+                <td>@v.Id_Promocion</td>
+                <td>@v.Descuento</td>
+                <td>@v.TotalConIva</td>
+                <td class="acciones">
+                    <a asp-controller="Ventas" asp-action="EditarVenta" asp-route-id="@v.Id_venta" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                    <a asp-controller="Ventas" asp-action="EliminarVenta" asp-route-id="@v.Id_venta" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');"><i class="bi bi-trash"></i></a>
+                    <a asp-controller="Ventas" asp-action="VistaVentaPorId" asp-route-id="@v.Id_venta" class="btn-ver"><i class="bi bi-eye"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+    </div>
+</section>

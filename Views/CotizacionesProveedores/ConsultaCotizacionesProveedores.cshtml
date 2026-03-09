@@ -1,0 +1,296 @@
+﻿@model SICOVWEB_MCA.Helpers.Paginacion<SICOVWEB_MCA.Models.Cotizacion_proveedor>
+
+@{
+    ViewData["Title"] = "Consulta de Cotizaciones de Proveedores";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<section class="contenedor-principal">
+    <!-- Encabezado de la sección con botones alineados -->
+    <div class="encabezado-seccion">
+        <h2 class="titulo-seccion">Consulta de Cotizaciones de Proveedores</h2>
+        <div class="botones-acciones">
+            <a asp-area="" asp-controller="CotizacionesProveedores" asp-action="CrearCotizacionProveedor" class="btn-primario">Registrar Cotización</a>
+            <a asp-area="" asp-controller="CotizacionesProveedores" asp-action="CompararCotizaciones" class="btn-primario">Comparar Cotizaciones</a>
+        </div>
+    </div>
+
+    <!-- FILTROS DE BÚSQUEDA -->
+    <form asp-controller="CotizacionesProveedores" asp-action="Buscar" method="get" id="formFiltros" class="form-filtros">
+        <div class="grid-filtros">
+
+            <div>
+                <label for="idCotizacion">No. Cotización:</label>
+                <input type="text" id="idCotizacion" name="idCotizacion" class="input-filtro" />
+            </div>
+
+            <div>
+                <label for="proveedorId">Proveedor:</label>
+                <select id="proveedorId" name="proveedorId" class="input-filtro">
+                    <option value="">-- Todos --</option>
+                    @foreach (var p in ViewBag.Proveedores as List<SelectListItem>)
+                    {
+                        <option value="@p.Value">@p.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <label for="empleadoId">Empleado:</label>
+                <select id="empleadoId" name="empleadoId" class="input-filtro">
+                    <option value="">-- Todos --</option>
+                    @foreach (var e in ViewBag.Empleados as List<SelectListItem>)
+                    {
+                        <option value="@e.Value">@e.Text</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label for="estatus">Estatus:</label>
+                <select id="estatus" name="estatus" class="input-filtro">
+                    <option value="">-- Todos --</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Aprobada">Aprobada</option>
+                    <option value="Cancelada">Cancelada</option>
+                </select>
+            </div>
+            <div>
+                <label for="fechaInicio">Fecha inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="input-filtro" />
+            </div>
+
+            <div>
+                <label for="fechaFin">Fecha fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="input-filtro" />
+            </div>
+            <div class="contenedor-boton-buscar">
+                <button type="submit" class="btn-buscar">Buscar</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- TABLA DE RESULTADOS -->
+    <div class="tabla-container">
+        <table class="tabla-datos">
+            <thead>
+                <tr>
+                    <th>No. Cotización</th>
+                    <th>Proveedor</th>
+                    <th>Empleado</th>
+                    <th>Precio Total</th>
+                    <th>Fecha</th>
+                    <th>Fecha Vigencia</th>
+                    <th>Estatus</th>
+                    <th>Tipo Moneda</th>
+                    <th>Condiciones de Pago</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id_cotizacion</td>
+                            <td>@item.Proveedor?.Razon_social</td>
+                            <td>@item.Empleado?.Nombre</td>
+                            <td>@item.Precio_total.ToString("C2")</td>
+                            <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Fecha_Vigencia.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Estatus</td>
+                            <td>@item.Tipo_Moneda</td>
+                            <td>@item.Condiciones_Pago</td>
+                            <td class="acciones">
+                                <a asp-action="VistaCotizacionProveedor" asp-route-id="@item.Id_cotizacion" class="btn-ver"><i class="bi bi-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="10" class="sin-datos">No se encontraron cotizaciones.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div class="paginacion">
+        @if (Model.TienePaginaAnterior)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-idCotizacion="@ViewBag.Filtros?.idCotizacion"
+               asp-route-clienteId="@ViewBag.Filtros?.proveedorId"
+               asp-route-empleadoId="@ViewBag.Filtros?.empleadoId"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin"
+               asp-route-estatus="@ViewBag.Filtros?.estatus">« Anterior</a>
+        }
+
+        <span>Página @Model.PaginaActual de @Model.TotalPaginas</span>
+
+        @if (Model.TienePaginaSiguiente)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual + 1)"
+               asp-route-idCotizacion="@ViewBag.Filtros?.idCotizacion"
+               asp-route-clienteId="@ViewBag.Filtros?.proveedorId"
+               asp-route-empleadoId="@ViewBag.Filtros?.empleadoId"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin"
+               asp-route-estatus="@ViewBag.Filtros?.estatus">Siguiente »</a>
+        }
+    </div>
+
+</section>
+
+
+
+@* 
+
+@model SICOVWEB_MCA.Helpers.Paginacion<SICOVWEB_MCA.Models.Cotizacion_proveedor>
+@{
+    ViewData["Title"] = "Consulta de Cotizaciones de Proveedores";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<section class="contenedor-principal">
+    <h2 class="titulo-seccion">Consulta de Cotizaciones de Proveedores</h2>
+    <div class="contenedor-boton">
+        <a asp-area="" asp-controller="CotizacionesProveedores" asp-action="CrearCotizacionProveedor" class="btn-primario">Registrar Cotización</a>
+        <a asp-area="" asp-controller="CotizacionesProveedores" asp-action="CompararCotizaciones" class="btn-primario">Comparar Cotizaciones</a>
+    </div>
+
+<div class="form-grid">
+    <!-- ====== FILTROS DE BÚSQUEDA ====== -->
+    <form asp-controller="CotizacionesProveedores" asp-action="Buscar" method="get" id="formFiltros" class="filtros">
+        <div>
+            <label for="idCotizacion"># Cotización:</label>
+            <input type="text" id="idCotizacion" name="idCotizacion" class="input-filtro" />
+        </div>
+
+        <!-- Lista de Proveedores -->
+        <div >
+            <label for="proveedorId">Proveedor:</label>
+            <select id="proveedorId" name="proveedorId" class="input-filtro">
+                <option value="">-- Todos --</option>
+                @foreach (var p in ViewBag.Proveedores as List<SelectListItem>)
+                {
+                    <option value="@p.Value">@p.Text</option>
+                }
+            </select>
+        </div>
+
+        <!-- Lista de Empleados -->
+        <div >
+            <label for="empleadoId">Empleado:</label>
+            <select id="empleadoId" name="empleadoId" class="input-filtro">
+                <option value="">-- Todos --</option>
+                @foreach (var e in ViewBag.Empleados as List<SelectListItem>)
+                {
+                    <option value="@e.Value">@e.Text</option>
+                }
+            </select>
+        </div>
+
+        <div >
+            <label for="fechaInicio">Fecha inicio:</label>
+            <input type="date" id="fechaInicio" name="fechaInicio" class="input-filtro" />
+        </div>
+
+        <div >
+            <label for="fechaFin">Fecha fin:</label>
+            <input type="date" id="fechaFin" name="fechaFin" class="input-filtro" />
+        </div>
+
+        <div >
+            <label for="estatus">Estatus:</label>
+            <select id="estatus" name="estatus" class="input-filtro">
+                <option value="">-- Todos --</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Aprobada">Aprobada</option>
+                <option value="Cancelada">Cancelada</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-buscar">Buscar</button>
+    </form>
+</div>
+    <!-- ====== TABLA DE RESULTADOS class="tabla-datos" ====== -->
+    <div class="tabla-container">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>No. Cotización</th>
+                    <th>Proveedor</th>
+                    <th>Empleado</th>
+                    <th>Precio Total</th>
+                    <th>Fecha</th>
+                    <th>Fecha Vigencia</th>
+                    <th>Estatus</th>
+                    <th>Tipo Moneda</th>
+                    <th>Condiciones de Pago</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id_cotizacion</td>
+                            <td>@item.Proveedor?.Razon_social</td>
+                            <td>@item.Empleado?.Nombre</td>
+                            <td>@item.Precio_total.ToString("C2")</td>
+                            <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Fecha_Vigencia.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Estatus</td>
+                            <td>@item.Tipo_Moneda</td>
+                            <td>@item.Condiciones_Pago</td>
+                            <td class="acciones">
+                                
+                                <a asp-action="VistaCotizacionProveedor" asp-route-id="@item.Id_cotizacion" class="btn-ver"><i class="bi bi-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="10" class="sin-datos">No se encontraron cotizaciones.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- ====== PAGINACIÓN ====== -->
+    <div class="paginacion">
+        @if (Model.TienePaginaAnterior)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-idCotizacion="@ViewBag.Filtros?.idCotizacion"
+               asp-route-clienteId="@ViewBag.Filtros?.proveedorId"
+               asp-route-empleadoId="@ViewBag.Filtros?.empleadoId"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin"
+               asp-route-estatus="@ViewBag.Filtros?.estatus">« Anterior</a>
+        }
+
+        <span>Página @Model.PaginaActual de @Model.TotalPaginas</span>
+
+        @if (Model.TienePaginaSiguiente)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual + 1)"
+               asp-route-idCotizacion="@ViewBag.Filtros?.idCotizacion"
+               asp-route-clienteId="@ViewBag.Filtros?.proveedorId"
+               asp-route-empleadoId="@ViewBag.Filtros?.empleadoId"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin"
+               asp-route-estatus="@ViewBag.Filtros?.estatus">Siguiente »</a>
+        }
+    </div>
+</section>
+ *@

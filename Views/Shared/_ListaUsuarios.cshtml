@@ -1,0 +1,104 @@
+﻿@* Vista parcial creada para mostrar la tabla de los usuarios registrados en el sistema
+    El modelo que utiliza es una lista de objetos de tipo UsuarioVista, que contiene la información
+    Esta vista se carga dinamicamente al hacer click en el menu "Ver Usuarios Registrados" en la vista de Usuarios
+*@
+
+<!-- Llamada al modelo Usuario vista -->
+@using SICOVWEB_MCA.Models
+
+@model SICOVWEB_MCA.Helpers.Paginacion<SICOVWEB_MCA.Models.Usuario>
+@{
+    ViewData["Title"] = "Listado de  Usuarios";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";    
+    }
+
+<section class="contenedor-principal">
+    <h2 class="titulo-seccion">Consulta de Usuarios</h2>
+    <div class="contenedor-boton">
+        <a asp-area="" asp-controller="Usuarios" asp-action="MostrarRegistrar" class="btn-primario">Registrar Usuario</a>
+    </div>
+    <!-- ====== FILTROS DE BÚSQUEDA ====== -->
+    <form asp-controller="Usuarios" asp-action="Buscar" method="get" id="formFiltros" class="filtros">
+        <!-- Filtrar por # id -->
+        <div class="filtro-item">
+            <label for="idUsuario">No. usuario:</label>
+            <input type="text" id="idUsuario" name="idUsuario" class="input-filtro" />
+        </div>
+
+        <!-- Filtrar por 1er apellido -->
+        <div class="filtro-item">
+            <label for="apellidoPaterno">Apellido Paterno:</label>
+            <input type="text" id="apellidoPaterno" name="apellidoPaterno" class="input-filtro" />
+        </div>
+
+        <!-- Filtrar por tipo -->
+        <div class="filtro-item">
+            <label for="tipo">Estatus:</label>
+            <select id="tipo" name="tipo" class="input-filtro">
+                <option value="">-- Todos --</option>
+                <option value="admin">Administrador</option>
+                <option value="normal">Normal</option>
+            </select>
+        </div>
+
+        
+
+        <button type="submit" class="btn-buscar">Buscar</button>
+    </form>
+
+
+<h2>Lista de usuarios</h2>
+<hr />
+<div class="tabla-container">
+<table id="tabla">
+    <thead>
+        <tr>
+            <th>No. Usuario</th>
+            <th>Empleado</th>
+            <th>Correo</th>
+            <th>Tipo de Usuario</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.Id</td>
+                <td>@u.Empleado.Nombre @u.Empleado.Apellido_Paterno @u.Empleado.Apellido_Materno </td>
+                <td>@u.CorreoUsuario</td>
+                <td>@u.TipoUsuario</td>
+                <td style="display: block;">
+                    <a asp-controller="Usuarios" asp-action="Editar" asp-route-id="@u.Id" class="btn-editar" id="btnEditarUsuario"><i class="bi bi-pencil-square"></i></a>
+                   
+                    <a asp-controller="Usuarios" asp-action="Eliminar" asp-route-id="@u.Id" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+    </div>
+    <!-- ====== PAGINACIÓN ====== -->
+    <div class="paginacion">
+        @if (Model.TienePaginaAnterior)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-idUsuario="@ViewBag.Filtros?.idUsuario"
+               asp-route-apellidoPaterno="@ViewBag.Filtros?.apellidoPaterno"
+               asp-route-tipo="@ViewBag.Filtros?.tipo">« Anterior</a>
+        }
+
+        <span>Página @Model.PaginaActual de @Model.TotalPaginas</span>
+
+        @if (Model.TienePaginaSiguiente)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual + 1)"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-idUsuario="@ViewBag.Filtros?.idUsuario"
+               asp-route-apellidoPaterno="@ViewBag.Filtros?.apellidoPaterno"
+               asp-route-tipo="@ViewBag.Filtros?.tipo">Siguiente »</a>
+        }
+    </div>
+</section>

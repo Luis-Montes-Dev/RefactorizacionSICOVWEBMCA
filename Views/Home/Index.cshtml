@@ -1,0 +1,126 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body>
+   <link rel="stylesheet" href="~/css/estilos_inicio.css" />  
+   <link rel="stylesheet" href="~/css/estilos_modal.css" />  
+   <link rel="stylesheet" href="~/css/estilos_iconos.css" />
+    
+   <div class="inicio-container">  
+        <div id="toast" class="toast hidden"></div> <!-- Mensajes de error popup-->
+
+       <img src="~/images/logo_empresa.png" alt="Logo Empresa" class="logo" />
+
+        @* <div>
+            <div>
+                <img src="~/images/LOGO_SICOVWEB_CIRCULO.png" id="LogoHeader" style="width: 100%; height: 120px;" />
+            </div>           
+        </div> *@
+        <br>
+        <button class="btn-sesion" onclick="mostrarLogin()" style="">Iniciar Sesión <i class="bi bi-box-arrow-in-right"></i></button> <!-- Boton para mostrar formulario login-->
+    </div>
+
+   <!-- Modal Login -->  
+   <div class="modal-fondo" id="modalLogin">  
+       <div class="modal-contenido">  
+
+           <h2>Iniciar Sesión</h2>
+            <form method="post" asp-controller="Login_Controlador" asp-action="Login">
+                <button type="button" id="cerrar" class="cerrar" onclick="cerrarLogin()">X</button> <!-- Boton para cerrar el modal -->  
+               <label for="email">Correo electrónico:</label>  
+               <input type="email" id="CorreoUsuario" name="CorreoUsuario" required /> <!-- Caja de texto para ingresar correo de usuario -->  
+
+               <label for="password">Contraseña:</label>  
+               <input type="password" id="Contrasena" name="Contrasena" required /> <!-- Caja de texto para ingresar contraseña de usuario -->  
+
+                <!-- Google reCAPTCHA v2 para Azure web sites-->
+                <div class="g-recaptcha" data-sitekey="6LcZqC8rAAAAAII58lt6-aImLb96YG6kk1Y5fyzO"></div>
+                <!-- Google reCAPTCHA v2 para Localhost -->
+                @* <div class="g-recaptcha" data-sitekey="6LcejywrAAAAAIu7QLELpEEA5bvR4mdFvOBtmMEp"></div>    *@             
+
+                <button type="submit" id="ingresar" class="btn-primario">Ingresar</button> <!-- Boton ingresar -->
+                
+               <!-- Para llamar mensajes tipo toast -->
+               @section Scripts {
+                    <script>
+                        @if (TempData["ToastMessage"] != null)
+                        {
+                            <text>
+                                        showToast('@TempData["ToastMessage"]', '@TempData["ToastType"]');
+                            </text>
+                        }
+                    </script>
+                }               
+           </form>
+           
+            <a href="javascript:void(0)" class="link" onclick="mostrarRecuperar()">Olvidé mi contraseña</a> <!-- Boton para abrir modal recuperar contraseña -->           
+       </div>
+       
+   </div> <!-- Para mostrar el formulario de Login -->
+    <script>
+        function mostrarLogin() {
+            document.getElementById("modalLogin").style.display = "flex";
+        }
+        function cerrarLogin() {
+            document.getElementById("modalLogin").style.display = "none";
+        }
+    </script>
+
+    <!-- Script de Google para llamar la api Recaptcha -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <!-- Modal Recuperar -->
+    <div class="modal-fondo" id="modalRecuperar">
+        <div class="modal-contenido">
+            <form method="post" asp-controller="Login_Controlador" asp-action="Recuperar">
+                <button type="button" id="cerrar" class="cerrar" onclick="cerrarRecuperar()">X</button>
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="CorreoUsuario" name="CorreoUsuario" required />
+                <button type="submit" id="recuperar" class="btn-primario">Recuperar</button>
+            </form>
+        </div>
+    </div>    
+
+    <script>
+        function mostrarRecuperar() {
+            document.getElementById("modalRecuperar").style.display = "flex";
+        }
+        function cerrarRecuperar() {
+            document.getElementById("modalRecuperar").style.display = "none";
+        }
+    </script>
+
+    <!-- Modal Entrada invalida detectada-->
+    @if (TempData["MostrarModal"] != null)
+    {
+        <div id="modalAdvertencia" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+         background-color: rgba(0,0,0,0.5); z-index: 9999;">
+
+            <div style="background-color: white; color: red; padding: 20px; border-radius: 10px; width: 400px;
+                    margin: 100px auto; box-shadow: 0px 0px 10px rgba(0,0,0,0.25); text-align: center;">
+                <h3>⚠ Entrada inválida</h3>
+                <p>@TempData["MostrarModal"]</p>
+                <button onclick="document.getElementById('modalAdvertencia').style.display='none'"
+                        style="margin-top: 15px; background-color: red; color: white; border: none; padding: 10px 15px; cursor: pointer;">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    }
+
+
+    <!-- Mensajes informativos popup-->
+    <script>
+        function showToast(message, type = 'error') {
+            const toast = document.getElementById("toast");
+            toast.className = `toast show ${type}`;
+            toast.textContent = message;
+
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+    </script>
+    
+</body>

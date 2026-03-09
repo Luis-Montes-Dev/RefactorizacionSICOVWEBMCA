@@ -1,0 +1,134 @@
+﻿@model SICOVWEB_MCA.Models.ViewModels.CompararCotizacionesVM
+@{
+    ViewData["Title"] = "Comparar Cotizaciones de Proveedores";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<h2>Comparar Cotizaciones de Proveedores</h2>
+<!-- Se usa para consumir la vista parcial de Notificaciones alert -->
+<partial name="_Notificacion" />
+<form asp-action="CompararCotizaciones" method="post" id="formCompararCotizaciones">
+    <div class="filtros">
+        <div class="filtro-item">
+            <label>Seleccionar Cotización 1:</label>
+            <select asp-for="IdCotizacion1" class="form-select" asp-items="ViewBag.CotizacionesList">
+                <option value="">-- Seleccione --</option>
+            </select>
+        </div>
+
+        <div class="filtro-item">
+            <label>Seleccionar Cotización 2:</label>
+            <select asp-for="IdCotizacion2" class="form-select" asp-items="ViewBag.CotizacionesList">
+                <option value="">-- Seleccione --</option>
+            </select>
+        </div>
+
+        <div class="filtro-item">
+            <button type="submit" class="btn-buscar">Comparar</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.Cotizacion1 != null && Model.Cotizacion2 != null)
+{
+    <div class="comparacion">
+        <div class="cotizacion-card">
+            <h3>Cotización #@Model.Cotizacion1.Id_cotizacion</h3>
+            <p><strong>Proveedor:</strong> @Model.Cotizacion1.Proveedor.Razon_social</p>
+            <p><strong>Empleado:</strong> @Model.Cotizacion1.Empleado.Nombre @Model.Cotizacion1.Empleado.Apellido_Paterno @Model.Cotizacion1.Empleado.Apellido_Materno </p>
+            <p><strong>Total:</strong> @Model.Cotizacion1.Precio_total.ToString("C")</p>
+            <p><strong>Fecha:</strong> @Model.Cotizacion1.Fecha.ToShortDateString()</p>
+            <p><strong>Vigencia:</strong> @Model.Cotizacion1.Fecha_Vigencia.ToShortDateString()</p>
+            <p><strong>Estatus:</strong> @Model.Cotizacion1.Estatus</p>
+
+            <button type="button" class="btn-detalles" onclick="mostrarDetalles('detalles1')">Ver Detalles</button>
+
+            <div id="detalles1" class="detalles oculto">
+                <table class="tabla-detalles">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Descripción</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                            <th>T. entrega(Días)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.Cotizacion1.Detalles)
+                        {
+                            <tr>
+                                <td>@d.Nombre_producto</td>
+                                <td>@d.Descripcion</td>
+                                <td>@d.Cantidad</td>
+                                <td>@d.Precio_Unitario.ToString("C")</td>
+                                <td>@d.Subtotal.ToString("C")</td>
+                                <td>@d.Tiempo_Entrega</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="cotizacion-card">
+            <h3>Cotización #@Model.Cotizacion2.Id_cotizacion</h3>
+            <p><strong>Proveedor:</strong> @Model.Cotizacion2.Proveedor.Razon_social</p>
+            <p><strong>Empleado:</strong> @Model.Cotizacion1.Empleado.Nombre @Model.Cotizacion1.Empleado.Apellido_Paterno @Model.Cotizacion1.Empleado.Apellido_Materno </p>
+            <p><strong>Total:</strong> @Model.Cotizacion2.Precio_total.ToString("C")</p>
+            <p><strong>Fecha:</strong> @Model.Cotizacion2.Fecha.ToShortDateString()</p>
+            <p><strong>Vigencia:</strong> @Model.Cotizacion2.Fecha_Vigencia.ToShortDateString()</p>
+            <p><strong>Estatus:</strong> @Model.Cotizacion2.Estatus</p>
+
+            <button type="button" class="btn-detalles" onclick="mostrarDetalles('detalles2')">Ver Detalles</button>
+
+            <div id="detalles2" class="detalles oculto">
+                <table class="tabla-detalles">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Descripción</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unitario</th>
+                            <th>Subtotal</th>
+                            <th>T. entrega(Días)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.Cotizacion2.Detalles)
+                        {
+                            <tr>
+                                <td>@d.Nombre_producto</td>
+                                <td>@d.Descripcion</td>
+                                <td>@d.Cantidad</td>
+                                <td>@d.Precio_Unitario.ToString("C")</td>
+                                <td>@d.Subtotal.ToString("C")</td>
+                                <td>@d.Tiempo_Entrega</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="seleccion-final">
+        <form asp-controller="CotizacionesProveedores" asp-action="GenerarOrdenCompra" method="post">
+            <h4>Seleccione la cotización ganadora:</h4>
+            <input type="radio" name="IdCotizacionSeleccionada" value="@Model.Cotizacion1.Id_cotizacion" required /> Cotización #@Model.Cotizacion1.Id_cotizacion
+            <input type="radio" name="IdCotizacionSeleccionada" value="@Model.Cotizacion2.Id_cotizacion" required /> Cotización #@Model.Cotizacion2.Id_cotizacion
+            <br />
+            <button type="submit" class="btn-crear">Generar Orden de Compra</button>
+        </form>
+    </div>
+}
+
+
+<script>
+    function mostrarDetalles(id) {
+        const div = document.getElementById(id);
+        div.classList.toggle('oculto');
+    }
+</script>
+

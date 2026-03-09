@@ -1,0 +1,123 @@
+﻿@*
+    Vista para listar promociones.
+*@
+
+@{
+    ViewData["Title"] = "Lista de Promociones";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+@model SICOVWEB_MCA.Helpers.Paginacion<SICOVWEB_MCA.Models.Promocion>
+
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Consulta de Contactos de Clientes</h2>
+        <a asp-controller="Promociones" asp-action="CrearPromocion" class="btn-primario">Registrar Promoción</a>
+    </div>
+    <hr />
+    <!-- ====== FILTROS DE BÚSQUEDA ====== -->
+    <form asp-controller="Promociones" asp-action="Buscar" method="get" id="formFiltros" class="filtros">
+        <div class="grid-filtros">
+            <!-- Filtrar por # id contacto -->
+            <div class="filtro-item">
+                <label for="id">No. Promoción:</label>
+                <input type="text" id="id" name="id" class="input-filtro" />
+            </div>
+            <!-- Filtrar por Nombre -->
+            <div class="filtro-item">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" class="input-filtro" />
+            </div>
+
+            <!-- Filtrar por fecha de inicio -->
+            <div class="filtro-item">
+                <label for="fechaInicio">Fecha inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="input-filtro" />
+            </div>
+
+            <div class="filtro-item">
+                <label for="fechaFin">Fecha fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="input-filtro" />
+            </div>
+        </div>
+        <div class="acciones-formulario">
+            <button type="submit" class="btn-buscar"> Buscar</button>
+        </div>
+
+    </form>
+    <h2>Lista de Promociones</h2>
+    <hr />
+    <div class="tabla-container">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Campaña</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Descuento (%)</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Fin</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var promocion in Model)
+                    {
+                        <tr>
+                            <td>@promocion.Id_promocion</td>
+                            <td>@promocion.Campania.Nombre</td>
+                            <td>@promocion.Nombre</td>
+                            <td>@promocion.Descripcion</td>
+                            <td>@promocion.Descuento</td>
+                            <td>@promocion.Fecha_Inicio.ToString("dd/MM/yyyy")</td>
+                            <td>@promocion.Fecha_Fin.ToString("dd/MM/yyyy")</td>
+                            <td class="acciones">
+                                <a asp-action="EditarPromocion" asp-route-id="@promocion.Id_promocion" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                                <a asp-action="EliminarPromocion" asp-route-id="@promocion.Id_promocion" class="btn-borrar" onclick="return confirm('¿Está seguro de que desea eliminar esta promoción?');"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="10" class="sin-datos">No se encontraron resultados.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- ====== PAGINACIÓN ====== -->
+    <div class="paginacion">
+        @if (Model.TienePaginaAnterior)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-id="@ViewBag.Filtros?.id"
+               asp-route-nombre="@ViewBag.Filtros?.nombre"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">« Anterior</a>
+        }
+
+        <span>Página @Model.PaginaActual de @Model.TotalPaginas</span>
+
+        @if (Model.TienePaginaSiguiente)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual + 1)"
+               asp-route-id="@ViewBag.Filtros?.id"
+               asp-route-nombre="@ViewBag.Filtros?.nombre"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">Siguiente »</a>
+        }
+    </div>
+    <br />
+</section>
+<!-- ====== FORMULARIO SEPARADO PARA ENVIAR PROMOCIONES ====== -->
+<div class="acciones-formulario">
+    <form asp-controller="Promociones" asp-action="EnviarPromocionesPorCorreo" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn-primario">Enviar promociones a clientes</button>
+    </form>
+</div>

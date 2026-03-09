@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    p{
+        color: red;
+        font-size: 2em;
+    }
+
+</style>
+
+<script>
+    function alerta(){
+        alert("Esta entrando a la página de contacto");
+    }
+    function GetTime(){
+        var url = "@Url.Action("GetTime","Home")";
+
+        fetch(url)
+        .then(response => response.json())
+        .then(data => alert(data))
+    }
+</script>
+<h1 class="display-4">Bienvenido</h1>
+
+
+<div>
+    <p>
+        Esta página contiene datos de contacto: <br />
+        Correo: <br />
+        Teléfono: <br />
+        Facebook: <br />
+
+    </p>
+    <button onclick="alerta()">Alerta</button>
+    <button onclick="GetTime()">Obtener fecha</button>
+</div>

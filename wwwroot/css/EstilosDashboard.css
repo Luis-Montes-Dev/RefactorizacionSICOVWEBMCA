@@ -1,0 +1,110 @@
+﻿.clearfix {
+    clear: both;
+}
+.logo {
+    margin: 0px;
+    margin-left: 28px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 30px;
+}
+    .logo span {
+        color: #007ACC;
+    }
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+    
+}
+.head{
+    padding: 20px;
+}
+.col-div-6 {
+    width: 50%;
+    float: left;
+}
+.profile{
+    display: inline-block;
+    float: right;
+    width: 160px;
+}
+.pro-img {
+    float: left;
+    width: 40px;
+    margin-top: 5px;
+}
+.profile p {
+    color: black;
+    font-weight: 500;
+    margin-left: 55px;
+    margin-top: 10px;
+    font-size: 1rem;
+}
+    .profile p span {
+        font-weight: 400;
+        font-size: 0.9rem;
+        color: gray;
+        display: block;
+    }
+.col-div-3 {
+    width: 25%;
+    float: left;
+}
+
+/* Estilos para tarjetas */
+
+.contenedorTarjetas {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.tarjeta {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    border: 1px solid lightgray;
+    box-shadow: 2px 2px 8px 4px #d3d3d3d1;
+    border-radius: 15px;
+    font-family: sans-serif;
+    background: #fff; /* Fondo blanco para resaltar */
+}
+
+.titulo {
+    font-size: 1rem;
+    padding: 10px 10px 0 10px;
+}
+
+.cuerpo {
+
+    padding: 10px;
+    flex: 1 1 80%;
+}
+
+.pie {
+    background: #6699ff;
+    border-radius: 0 0 15px 15px;
+    padding: 5px;
+    text-align: center;
+}
+
+    .pie a {
+        font-size: 1rem;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+        display: inline-block;
+        transition: transform 0.2s, background 0.2s;
+        padding: 6px 12px;
+        border-radius: 8px;
+    }
+
+        /* Efecto hover para los enlaces */
+        .pie a:hover {
+            background: #4a7be0;
+            transform: scale(1.05);
+        }
+
+ 

@@ -1,0 +1,112 @@
+﻿@*
+    Vista creada para eliminar una cotización registrada en el sistema
+*@
+@model SICOVWEB_MCA.Models.Cotizacion
+@{
+    ViewData["Title"] = "Eliminar Cotización";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Datos de la cotización a eliminar</h2>
+        <a asp-controller="Cotizaciones" asp-action="Consultar" class="btn-secundario">
+            <i class="bi bi-arrow-left"></i> Regresar
+        </a>
+    </div>
+    <hr />
+    <div>
+        <form asp-controller="Cotizaciones" asp-action="Eliminar" method="post">
+            <input type="hidden" asp-for="IdCotizacion" />
+            <div class="form-grid">
+                <div>
+                    <label asp-for="IdCliente">Empresa</label>
+                    <input value="@(Model.Cliente?.Razon_Social ?? "Sin cliente")" class="campo-formulario" disabled />
+                </div>
+                <div>
+                    <!-- Aqui va la info de contactos de cliente -->
+                    @{
+                        if (Model?.Contacto == null)
+                        {
+
+                            <label asp-for="IdContacto">Contacto de empresa</label>
+
+                            <input value="Sin contacto" class="campo-formulario" disabled />
+
+                        }
+                        else
+                        {
+
+                            <label asp-for="IdContacto"></label>
+
+                            <input type="hidden" asp-for="IdContacto" value="@Model.IdContacto" disabled />
+                            <input value="@($"{Model?.Contacto.Nombre} {Model?.Contacto.Apellido_paterno} {Model?.Contacto.Apellido_materno}")" class="campo-formulario" disabled />
+
+                        }
+                    }
+                </div>
+                <div>
+                    <label asp-for="IdEmpleado2">Generado por</label>
+                    <input type="text" value="@User.Identity.Name" class="campo-formulario" disabled />
+                </div>
+                <div>
+                    <label asp-for="Fecha"></label>
+                    <input asp-for="Fecha" type="date" class="campo-formulario" disabled />
+                </div>
+                <div>
+                    <label asp-for="FechaVigencia"></label>
+                    <input asp-for="FechaVigencia" type="date" class="campo-formulario" disabled />
+                </div>
+                <div>
+                    <label asp-for="TipoMoneda"></label>
+                    <input type="text" asp-for="TipoMoneda" class="campo-formulario" disabled />
+                </div>
+                <div>
+                    <label asp-for="CondicionPago"></label>
+                    <input asp-for="CondicionPago" type="text" class="campo-formulario" disabled />
+                </div>
+                <div>
+                    <label asp-for="Estatus"></label>
+
+                    <input type="text" asp-for="Estatus" class="campo-formulario" disabled />
+                </div>
+                <div style="grid-column: 1 / span 2;">
+                    <label asp-for="Comentario"></label>
+
+                    <textarea asp-for="Comentario" class="campo-formulario" rows="3" disabled></textarea>
+                </div>
+
+            </div>
+            <div class="tabla-container">
+                <table id="tablaProductos">
+                    <thead>
+                        <tr>
+                            <th>CódigoProducto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Total</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.Detalles)
+                        {
+                            <tr>
+                                <td>@d.IdProducto</td>
+                                <td>@d.Cantidad</td>
+                                <td>@d.PrecioUnitario</td>
+                                <td>@d.PrecioTotal</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <br />
+            <div class="acciones-formulario">
+                <!-- Boton eliminar cotizacion -->
+                <button type="submit" class="btn-primario"><i class="bi bi-trash"></i> Eliminar</button>
+                
+            </div>
+        </form>
+    </div>
+</section>

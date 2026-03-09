@@ -1,0 +1,276 @@
+﻿@{
+    ViewData["Title"] = "Crear Cotización";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    var fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+@model SICOVWEB_MCA.Models.Cotizacion
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+</head>
+<section class="contenedor-principal">
+    <div class="header-seccion">
+    <h2>Registrar nueva cotización</h2>
+        <a asp-controller="Cotizaciones" asp-action="Consultar" class="btn-secundario">
+            <i class="bi bi-arrow-left"></i> Regresar
+        </a>
+    </div>
+    <hr />
+
+<form asp-controller="Cotizaciones" asp-action="CrearCotizacion" method="post">
+    <input type="hidden" asp-for="IdCotizacion" value="0" />
+    <input type="hidden" asp-for="Estatus" value="Nueva" />
+
+    <!-- FORMULARIO PRINCIPAL -->
+    <div class="form-grid">
+        <div>
+            <label asp-for="IdCliente">Empresa</label>
+            <select id="IdCliente" asp-for="IdCliente" asp-items="@(new SelectList(ViewBag.listaClientes, "Id_cliente", "Razon_Social"))" class="form-control">
+                <option value="">Seleccione una empresa</option>
+            </select>
+            <span asp-validation-for="IdCliente" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="IdContacto">Contacto de empresa</label>
+            <select id="IdContacto" asp-for="IdContacto" class="campo-formulario">
+                <option value="">Seleccione un contacto</option>
+            </select>
+            <span asp-validation-for="IdContacto" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="IdEmpleado2">Generado por</label>
+            <input type="text" value="@User.Identity.Name" class="campo-formulario" readonly />
+        </div>
+
+        <div>
+            <label asp-for="Fecha"></label>
+            <input asp-for="Fecha" type="date" value="@fechaActual" class="campo-formulario" readonly />
+            <span asp-validation-for="Fecha" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="FechaVigencia"></label>
+            <input asp-for="FechaVigencia" type="date" class="campo-formulario" />
+            <span asp-validation-for="FechaVigencia" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="TipoMoneda"></label>
+            <select asp-for="TipoMoneda" class="form-control">
+                <option value="">Seleccione un tipo de moneda</option>
+                <option value="MXN">MXN - Peso Mexicano</option>
+                <option value="USD">USD - Dólar Americano</option>
+            </select>
+            <span asp-validation-for="TipoMoneda" class="text-danger"></span>
+        </div>
+
+        <div>
+            <label asp-for="CondicionPago"></label>
+            <select asp-for="CondicionPago" class="form-control">
+                <option value="">Seleccione una condición de pago</option>
+                <option value="Contado">Contado</option>
+                <option value="Crédito 15 días">Crédito 15 días</option>
+                <option value="Crédito 30 días">Crédito 30 días</option>
+                <option value="Crédito 60 días">Crédito 60 días</option>
+            </select>
+            <span asp-validation-for="CondicionPago" class="text-danger"></span>
+        </div>
+
+        <div style="grid-column: 1 / span 2;">
+            <label asp-for="Comentario"></label>
+            <textarea asp-for="Comentario" class="campo-formulario" rows="3"></textarea>
+            <span asp-validation-for="Comentario" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="tabla-container">
+    <!-- TABLA DE DETALLES DE PRODUCTOS -->
+    <table id="tablaProductos" class="tabla-detalles">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Descripción</th>
+                <th>Unidades</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Tiempo entrega</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select id="IdProducto" asp-for="Detalles[0].IdProducto" asp-items="@(new SelectList(ViewBag.listaProductos, "Id_producto", "Nombre"))" class="campo-formulario producto-autocomplete">
+                        <option value="">Seleccione un producto</option>
+                    </select>
+                    <input type="hidden" name="Detalles[0].IdProducto" class="idproducto-hidden" />
+                </td>
+                <td><input name="Detalles[0].Descripcion" type="text" class="campo-formulario descripcion" /></td>
+                <td>
+                    <select name="Detalles[0].Unidad" class="form-control unidad">
+                        <option value="">Seleccione</option>
+                        <option value="Pzs">Piezas</option>
+                        <option value="Mts">Metros</option>
+                        <option value="Kgs">Kilogramos</option>
+                        <option value="Lts">Litros</option>
+                        <option value="Svc">Servicio</option>
+                    </select>
+                </td>
+                <td><input name="Detalles[0].Cantidad" type="number" class="campo-formulario" /></td>
+                <td><input name="Detalles[0].PrecioUnitario" type="number" step="0.01" class="campo-formulario precio" /></td>
+                <td>
+                    <select name="Detalles[0].TiempoEntrega" class="form-control">
+                        <option value="">Seleccione</option>
+                        <option value="Inmediato">Inmediato</option>
+                        <option value="3 días">3 días</option>
+                        <option value="7 días">7 días</option>
+                        <option value="15 días">15 días</option>
+                        <option value="30 días">30 días</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="button" onclick="this.parentElement.parentElement.remove()" class="btn-borrar">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="acciones-detalle">
+    <button type="button" onclick="agregarProducto()" class="btn-primario" style="margin-top:10px;">
+        <i class="bi bi-plus-circle"></i> Agregar producto
+    </button>
+    </div>
+    <!-- BOTONES DE ACCIÓN -->
+    <div class="acciones-formulario">
+        <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar</button>
+        <button type="reset" class="btn-borrar"><i class="bi bi-eraser"></i> Limpiar</button>
+    </div>
+</form>
+</section>
+
+<script>
+        
+    document.addEventListener("DOMContentLoaded", () => {
+        const clienteSelect = document.getElementById("IdCliente");
+        const contactoSelect = document.getElementById("IdContacto");
+
+        clienteSelect.addEventListener("change", async () => {
+            const idCliente = clienteSelect.value;
+
+            // Limpia el select de contactos
+            contactoSelect.innerHTML = '<option value="">-- Seleccione un contacto --</option>';
+
+            if (!idCliente) return; // si no se seleccionó cliente, no hace nada
+
+            try {
+                const response = await fetch(`/Cotizaciones/GetContactosPorCliente?idCliente=${idCliente}`);
+
+                if (!response.ok) throw new Error("Error en la solicitud");
+
+                const data = await response.json();
+
+                if (data.length > 0) {
+                    console.log("Contactos cargados:", data);
+                        data.forEach(contacto => {
+                        const option = document.createElement("option");
+                        option.value = contacto.id_contacto;      
+                        option.textContent = contacto.nombreCompleto;     
+                        contactoSelect.appendChild(option);
+                    });
+
+                } else {
+                    const option = document.createElement("option");
+                    option.textContent = "(Sin contactos registrados)";
+                    option.value = "";
+                    contactoSelect.appendChild(option);
+                }
+
+            } catch (error) {
+                console.error("Error al cargar contactos:", error);
+                const option = document.createElement("option");
+                option.textContent = "(Error al cargar contactos)";
+                contactoSelect.appendChild(option);
+            }
+        });
+    });
+
+
+
+    // Funcion para autorellenar datos de un producto seleccionado de la lista
+    let listaProductos = [];
+
+    $(document).ready(function () { // Obtiene lista de productos del controlador 1 vez
+        $.getJSON('@Url.Action("GetProductos", "Cotizaciones")', function (data) {
+            listaProductos = data;
+        });
+
+        $(document).on("change", ".producto-autocomplete", function () { // Cuando detecta cambio en esta clase de select
+            const $row = $(this).closest("tr");
+            const id = $(this).val();
+            const producto = listaProductos.find(p => p.idProducto == id); // Si el producto se encuentra por su id
+            if (producto) { // Si el producto fue encontrado llenar los campos de la fila 
+                $row.find(".idproducto-hidden").val(producto.idProducto);
+                $row.find(".descripcion").val(producto.descripcion);
+                $row.find(".unidad").val(producto.unidad);
+                $row.find(".precio").val(producto.precioVenta);
+            }
+        });
+    });
+    // Funcion para llenar el selector desplegable de productos
+    function llenarSelectProductos($select) { // toma como parametro la ubicacion del select 
+        if (!listaProductos || listaProductos.length === 0) return; // Si la lista de productos esta vacia no hace nada
+        $select.empty().append('<option value="">Seleccione un producto</option>');// Si no llena el selector de productos
+        listaProductos.forEach(p => { // Por cada producto en la lista 
+            $select.append(`<option value="${p.idProducto}">${p.nombreProducto}</option>`); // Abre una fila y coloca nombre visible (el valor seleccionado es el idProducto)
+        });
+    }
+
+    function agregarProducto() {
+        let index = $("#tablaProductos tbody tr").length;
+        let row = `
+        <tr>
+            <td>
+                <select name="Detalles[${index}].IdProducto" class="campo-formulario producto-autocomplete">
+                    <option value="">Seleccione un producto</option>
+                </select>
+                <input type="hidden" name="Detalles[${index}].IdProducto" class="idproducto-hidden" />
+            </td>
+            <td><input name="Detalles[${index}].Descripcion" type="text" class="campo-formulario descripcion" /></td>
+            <td>
+                <select name="Detalles[${index}].Unidad" class="form-control unidad">
+                    <option value="">Seleccione</option>
+                    <option value="Pzs">Piezas</option>
+                    <option value="Mts">Metros</option>
+                    <option value="Kgs">Kilogramos</option>
+                    <option value="Lts">Litros</option>
+                    <option value="Svc">Servicio</option>
+                </select>
+            </td>
+            <td><input name="Detalles[${index}].Cantidad" type="number" class="campo-formulario" /></td>
+            <td><input name="Detalles[${index}].PrecioUnitario" type="number" step="0.01" class="campo-formulario precio" /></td>
+            <td>
+                <select name="Detalles[${index}].TiempoEntrega" class="form-control">
+                    <option value="">Seleccione</option>
+                    <option value="Inmediato">Inmediato</option>
+                    <option value="3 días">3 días</option>
+                    <option value="7 días">7 días</option>
+                    <option value="15 días">15 días</option>
+                    <option value="30 días">30 días</option>
+                </select>
+            </td>
+            <td>
+                <button type="button" onclick="this.parentElement.parentElement.remove()" class="btn-borrar">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        </tr>`;
+        $("#tablaProductos tbody").append(row);
+        llenarSelectProductos($("#tablaProductos tbody tr:last .producto-autocomplete"));
+    }
+</script>

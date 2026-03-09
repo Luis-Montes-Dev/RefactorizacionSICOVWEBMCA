@@ -1,0 +1,78 @@
+﻿@model SICOVWEB_MCA.Models.Contacto_cliente
+
+@*
+    Vista para eliminar un Contacto_cliente registrado en el sistema
+*@
+
+@{
+    ViewData["Title"] = "Eliminar Contacto de cliente";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+
+<h2>Datos del Contacto a eliminar</h2>
+<hr />
+<div>
+    <form asp-controller="ContactosClientes" asp-action="Eliminar" method="post">
+        <input type="hidden" asp-for="Id_contacto"/>
+        <table id="tabla">
+            <tr>
+                <td>
+                    <label asp-for="Id_Cliente">ID Cliente</label>
+                </td>
+                <td>
+                    <input type="number" asp-for="Id_Cliente" class="campo-formulario" disabled/>
+                </td>
+                <td><label asp-for="Nombre"></label></td>
+                <td>
+                    <input type="text" asp-for="Nombre" class="campo-formulario" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td><label asp-for="Apellido_paterno"></label></td>
+                <td>
+                    <input type="text" asp-for="Apellido_paterno" class="campo-formulario" disabled/>
+                </td>
+                <td><label asp-for="Apellido_materno"></label></td>
+                <td>
+                    <input type="text" asp-for="Apellido_materno" class="campo-formulario" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td><label asp-for="Cargo"></label></td>
+                <td>
+                    <input type="text" asp-for="Cargo" class="campo-formulario" disabled/>
+                </td>
+                <td><label asp-for="Correo"></label></td>
+                <td>
+                    <input type="text" asp-for="Correo" class="campo-formulario" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td><label asp-for="Telefono"></label></td>
+                <td>
+                    <input type="text" asp-for="Telefono" class="campo-formulario" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td><label asp-for="Fecha_alta"></label></td>
+                <td>
+                    <input asp-for="Fecha_alta" type="date" class="campo-formulario" readonly />
+                </td>
+                <td><label asp-for="Fecha_baja"></label></td>
+                <td>
+                    <input asp-for="Fecha_baja" type="date" class="campo-formulario" disabled/>
+                </td>
+            </tr>
+
+        </table>
+        <br />
+        <!-- Botonera -->
+        <div style="display:flex; justify-content: left">
+            <!-- Boton guardar  -->
+            <button type="submit" class="btn-primario"><i class="bi bi-trash"></i></button><br />
+            <!-- Boton cancelar -->
+            <a asp-controller="ContactosClientes" asp-action="Buscar" class=" btn-borrar" style="font-size: 1.5rem"><i class="bi bi-x-circle"></i></a>
+        </div>
+    </form>
+</div>

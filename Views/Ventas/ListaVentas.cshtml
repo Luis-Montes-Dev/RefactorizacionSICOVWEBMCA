@@ -1,0 +1,141 @@
+﻿@*
+    Vista para mostrar la lista de Ventas.
+*@
+@{
+    ViewData["Title"] = "Lista de Ventas";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+@using SICOVWEB_MCA.Models
+
+@model SICOVWEB_MCA.Helpers.Paginacion<SICOVWEB_MCA.Models.Venta>
+
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2 class="titulo-seccion">Consulta de Ventas</h2>
+        <a asp-area="" asp-controller="Ventas" asp-action="CrearVenta" class="btn-primario">Registrar Venta</a>
+    </div>
+
+    <form asp-controller="Ventas" asp-action="Buscar" method="get" id="formFiltros" class="filtros">
+        <div class="grid-filtros">
+            <!-- Filtrar por # id contacto -->
+            <div>
+                <label for="id">No. Venta:</label>
+                <input type="text" id="id" name="id" class="input-filtro" />
+            </div>
+            <!-- Filtrar por Razon social de cliente -->
+            <div>
+                <label for="razonSocial">Cliente:</label>
+                <input type="text" id="razonSocial" name="razonSocial" class="input-filtro" />
+            </div>
+            <!-- Filtrar por Nombre de empleado -->
+            <div>
+                <label for="nombreEmpleado">Vendido por:</label>
+                <input type="text" id="nombreEmpleado" name="nombreEmpleado" class="input-filtro" />
+            </div>
+            <!-- Filtrar por Estatus -->
+            <div>
+                <label for="estatus">Estatus:</label>
+                <select id="estatus" name="estatus" class="input-filtro">
+                    <option value="">--Seleccione--</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En proceso">En proceso</option>
+                    <option value="Entregada">Entregada</option>
+                    <option value="Cancelada">Cancelada</option>
+                </select>
+            </div>
+            <!-- Filtrar por fecha de alta -->
+            <div>
+                <label for="fechaInicio">Fecha inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="input-filtro" />
+            </div>
+            <div>
+                <label for="fechaFin">Fecha fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="input-filtro" />
+            </div>
+        </div>
+        <div class="acciones-formulario">
+            <button type="submit" class="btn-buscar">Buscar</button>
+        </div>
+    </form>
+
+    <h2>Lista de Ventas</h2>
+    <hr />
+    <div class="tabla-container">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>No. Venta</th>
+                    <th>Empresa</th>
+                    <th>No. Cotización</th>
+                    <th>Elaboró</th>
+                    <th>Fecha de venta</th>
+                    <th>Fecha de entrega</th>
+                    <th>Estatus</th>
+                    <th>Promoción</th>
+                    <th>Descuento</th>
+                    <th>Total</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var v in Model)
+                    {
+                        <tr>
+                            <td>@v.Id_venta</td>
+
+
+                            <td>@($"{v.Cliente?.Razon_Social}")</td>
+                            <td>@v.Id_Cotizacion</td>
+                            <td>@($"{v.Empleado?.Nombre} {v.Empleado?.Apellido_Paterno} {v.Empleado?.Apellido_Materno}")</td>
+                            <td>@v.Fecha_Venta.ToString("dd-MM-yyyy")</td>
+                            <td>@v.Fecha_Entrega?.ToString("dd-MM-yyyy")</td>
+                            <td>@v.Estatus</td>
+                            <td>@v.Id_Promocion</td>
+                            <td>@v.Descuento</td>
+                            <td>@v.TotalConIva</td>
+                            <td class="acciones">
+                                <a asp-controller="Ventas" asp-action="EditarVenta" asp-route-id="@v.Id_venta" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                                <a asp-controller="Ventas" asp-action="EliminarVenta" asp-route-id="@v.Id_venta" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');"><i class="bi bi-trash"></i></a>
+                                <a asp-controller="Ventas" asp-action="VistaVentaPorId" asp-route-id="@v.Id_venta" class="btn-ver"><i class="bi bi-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="10" class="sin-datos">No se encontraron resultados.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- ====== PAGINACIÓN ====== -->
+    <div class="paginacion">
+        @if (Model.TienePaginaAnterior)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-id="@ViewBag.Filtros?.id"
+               asp-route-razonSocial="@ViewBag.Filtros?.razonSocial"
+               asp-route-nombreEmpleado="@ViewBag.Filtros?.nombreEmpleado"
+               asp-route-estatus="@ViewBag.Filtros?.estatus"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">« Anterior</a>
+        }
+
+        <span>Página @Model.PaginaActual de @Model.TotalPaginas</span>
+
+        @if (Model.TienePaginaSiguiente)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual + 1)"
+               asp-route-id="@ViewBag.Filtros?.id"
+               asp-route-razonSocial="@ViewBag.Filtros?.razonSocial"
+               asp-route-nombreEmpleado="@ViewBag.Filtros?.nombreEmpleado"
+               asp-route-estatus="@ViewBag.Filtros?.estatus"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">Siguiente »</a>
+        }
+    </div>
+</section>

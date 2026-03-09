@@ -1,0 +1,82 @@
+﻿@*
+    Vista usada para importar datos desde un archivo Excel.
+*@
+@using SICOVWEB_MCA.Models
+@{
+    ViewData["Title"] = "Importador Excel Productos";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<h1>Importar productos de Excel</h1>
+
+<div class="row">
+    <div class="col-sm-4">
+        <input class="btn-primario" type="file" id="inputExcel" />
+    </div>
+    <br />
+    <div class="col-sm-4">
+        <button id="btnMostrar" class="btn-primario">Mostrar Datos</button>        
+    </div>
+</div>
+
+<hr />
+
+<div id="resultadoExcel"></div>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            // Evento Mostrar Datos
+            $("#btnMostrar").on("click", function (e) {
+                e.preventDefault();
+
+                const input = document.getElementById("inputExcel"); // Selecciona el input file
+                if (input.files.length === 0) {
+                    alert("Selecciona un archivo Excel primero.");
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append("ArchivoExcel", input.files[0]);
+
+                $.ajax({ // AJAX para enviar el archivo al servidor
+                    url: "/Importador/MostrarDatosProductos",
+                    type: "POST",
+                    data: formData,
+                    processData: false, // necesario para FormData
+                    contentType: false, // necesario para FormData
+                    success: function (html) {
+                        $("#resultadoExcel").html(html); // inserta la vista parcial
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error);
+                        alert("Ocurrió un error al mostrar el contenido del Excel.");
+                    }
+                });
+            });
+
+            // Delegamos el evento submit del form parcial
+            $(document).on("submit", "#formGuardarExcel", function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: $(this).attr("method"),
+                    data: $(this).serialize(),
+                    success: function (resp) {
+                        if (resp.success) {
+                            alert(resp.message);
+                            $("#resultadoExcel").empty();
+                        } else {
+                            alert(resp.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Error al guardar en BD.");
+                    }
+                });
+            });
+        });
+    </script>
+}

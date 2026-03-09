@@ -1,0 +1,620 @@
+﻿/* =======================================================
+   main.css - Estilos generales del sistema SICOVWEB_MCA
+   Unificación de: site.css + estilosUsuarios.css +
+   EstilosDashboard.css + Estilos_formularios.css
+   ======================================================= */
+
+/* ==== BASE GLOBAL ==== */
+html, body {
+    height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: #17202a;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Para que el footer se posicione correctamente */
+    padding-bottom: 0px; /* Espacio para el footer */
+}
+
+html {
+    font-size: 15px;
+}
+
+body {
+    background: url('/images/Fondo_Logo_Circular.png') center/cover no-repeat fixed;
+    /*padding-bottom: 50px;*/
+}
+
+footer {
+    background-color: transparent; /*Nuevas reglas por problema con footer 09-10-25*/
+    color: #17202a;
+    text-align: center;
+    padding: 15px;
+    width: 80%;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative; /* ya no absolute */
+    /*bottom: 0;*/
+}
+
+/* ==== TIPOGRAFÍA ==== */
+h1, h2, h3, h4, h5, h6 {
+    color: #17202a;
+    margin: 0.5rem 0;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+p {
+    font-size: 1rem;
+    color: #17202a;
+}
+
+a {
+    color: #070A9C;
+    text-decoration: none;
+    transition: color .3s;
+}
+
+    a:hover {
+        color: #005fa3;
+    }
+/* text-danger muestra mensajes de advertencia al usuario en color rojo */
+.text-danger {
+    color: red;
+    text-align: center;
+    -webkit-text-decoration: inherit;
+    text-decoration: inherit;
+}
+
+
+/* ==== BOTONES ==== */
+button,
+.btn-primario, .btn-secundario, .btn-sesion, .btn-buscar {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-editar, .btn-borrar, .btn-ver {
+    padding: 4px 4px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primario, .btn-secundario, .btn-editar, .btn-sesion, .btn-buscar {
+    background: #070A9C;
+}
+
+    .btn-primario:hover, .btn-secundario:hover, .btn-editar:hover, .btn-sesion:hover, .btn-buscar:hover {
+        background: #005fa3;
+    }
+
+.btn-borrar {
+    background: #C82909;
+}
+
+    .btn-borrar:hover {
+        background: darkorange;
+    }
+
+.btn-ver {
+    background: green;
+}
+
+    .btn-ver:hover {
+        background: lightgreen;
+    }
+
+/* ==== FORMULARIOS ==== */
+label {
+    color: #17202a;
+    font-size: 1rem;
+}
+
+.campo-formulario, .form-control, input[type="text"], input[type="email"], input[type="password"], input[type="date"], select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+    select,
+    .campo-formulario select,
+    .form-control select {
+        color: #17202a !important; /* texto oscuro */
+        background-color: #ffffff !important; /* fondo claro */
+    }
+
+        /* ==== FIJAR VISIBILIDAD DE OPCIONES ==== */
+        select option,
+        .campo-formulario option,
+        .form-control option {
+            color: #17202a !important; /* texto visible */
+            background-color: #ffffff !important; /* fondo del menú */
+        }
+/* ==== TABLAS ==== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: ghostwhite;
+}
+
+    table th, table td {
+        padding: 4px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    table th {
+        background-color: #051139;
+        color: white;
+    }
+
+/* ==== TABLAS USADAS EN CAPTURAR COTIZACIONES Y VENTAS ==== */
+#tablaProductos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0px;
+}
+
+    #tablaProductos th, #tablaProductos td {
+        border: 1px solid #ccc;
+        padding: 4px;
+        text-align: left;
+    }
+
+    #tablaProductos th {
+        background-color: #051139;
+    }
+
+.acciones {
+    display: flex;
+    gap: 2px;
+    margin-top: 5px;
+}
+
+
+/* ==== CONTENEDORES ==== */
+.main-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem;
+}
+
+.contenedor-principal {
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+}
+
+.tabla-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.contenedor-boton {
+    display: flex;
+    justify-content: flex-end; /* alinea a la derecha */
+    margin-bottom: 1rem;
+}
+
+
+/* Estilos para paginacion */
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+    .paginacion a {
+        padding: 6px 12px;
+        background-color: #004aad;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+        .paginacion a:hover {
+            background-color: #007bff;
+        }
+
+
+/* ==== SIDEBAR ==== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background: #051139;
+    color: white;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #051139;
+    z-index: 100;
+}
+
+    .sidebar::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background: #666;
+        border-radius: 4px;
+    }
+
+    .sidebar a {
+        display: block;
+        color: white;
+        padding: 10px 15px;
+        font-size: 1rem;
+    }
+
+        .sidebar a:hover {
+            background: #575757;
+        }
+
+/* ==== CONTENIDO PRINCIPAL ==== */
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+/* ==== DASHBOARD ==== */
+.contenedorTarjetas {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.tarjeta {
+    width: 30%;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 8px #d3d3d3d1;
+    border-radius: 15px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+    .tarjeta .pie {
+        background: #6699ff;
+        border-radius: 0 0 15px 15px;
+        text-align: center;
+        padding: 5px;
+    }
+
+        .tarjeta .pie a {
+            color: white;
+            font-weight: bold;
+        }
+
+/* ==== MODALES ==== */
+.modal-fondo {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-contenido {
+    background: white;
+    padding: 30px;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
+    position: relative;
+}
+ 
+
+/* Ajustes para el modal login */
+.modal-contenido .g-recaptcha {
+        transform: scale(1);
+        transform-origin: center;
+    }
+    .modal-contenido form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .modal-contenido .g-recaptcha {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+
+
+    .modal-contenido .cerrar {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent; /**/
+        border: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: red;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+.cerrar:hover {
+    transform: scale(1.1);
+}
+/* ==== LOGIN ==== */
+/*.modal_login {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,.2);
+}*/
+
+
+/* ==== ALERTAS ==== */
+.alert-warning, .alert-success {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1100;
+    padding: .75rem 1.25rem;
+    border-radius: .5rem;
+    color: #fff;
+}
+
+.alert-warning {
+    background: #fa2813;
+}
+
+.alert-success {
+    background: #38b000;
+}
+
+
+/* ==== CABECERA Y BOTÓN MENÚ ==== */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #051139;
+    color: white;
+    padding: 10px 15px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1001;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.titulo-sistema {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.btn-menu-mobile {
+    display: none;
+    background: #070A9C;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .btn-menu-mobile:hover {
+        background: #005fa3;
+    }
+
+/* Ajustar contenido con header fijo */
+.content {
+    margin-top: 60px;
+}
+
+.inicio-container {
+    background-color: transparent; /* Fondo transparente*/
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.logo {
+    width: 400px;
+    height: auto;
+    margin-top: 80px;
+    margin-bottom: 30px;
+}
+
+/* --- FORMULARIO CON GRID --- */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /*1fr 1fr ;  dos columnas iguales */
+    gap: 1.2rem 2rem; /* espacio entre campos */
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+    /* Campos de texto y select */
+    .form-grid input,
+    .form-grid select {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 0.95rem;
+        color: #17202a !important;
+        box-sizing: border-box;
+    }
+
+    /* Etiquetas */
+    .form-grid label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+/* Contenedor de botones */
+.contenedor-botones {
+    grid-column: span 2; /* ocupa el ancho completo */
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* ====== PRUEBA NUEVO DISEÑO PARA PAGINAS DE CONSULTA ====== */
+/* ====== ENCABEZADO CON BOTONES ====== */
+.encabezado-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+/* ====== GRID DE FILTROS ====== */
+.form-filtros {
+    margin-bottom: 1.5rem;
+}
+
+.grid-filtros {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    align-items: end;
+}
+
+    .grid-filtros label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+.input-filtro {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Botón Buscar centrado */
+.contenedor-boton-buscar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* ====== TABLA ====== */
+.tabla-container {
+    overflow-x: auto;
+}
+
+.tabla-datos {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .tabla-datos th, .tabla-datos td {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .tabla-datos th {
+        background-color: #051139;
+        font-weight: bold;
+    }
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+    .encabezado-seccion {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .botones-acciones {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .grid-filtros {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ======= NUEVO DISEÑO PARA CREAR COTIZACIONES PROVEEDORES */
+.header-seccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+
+.tabla-detalles {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+    .tabla-detalles th, .tabla-detalles td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+.acciones-detalle, .acciones-formulario {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .tabla-detalles th, .tabla-detalles td {
+        font-size: 0.85rem;
+    }
+
+    .acciones-formulario {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

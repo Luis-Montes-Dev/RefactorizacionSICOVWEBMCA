@@ -1,0 +1,49 @@
+﻿@*
+    Vista parcial de Registro de usuarios
+*@
+
+@model SICOVWEB_MCA.Models.Usuario
+
+@{
+    ViewData["Title"] = "Registrar Usuario";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    var fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+<section class="contenedor-principal">
+    <h2>Registrar nuevo usuario</h2>
+    <hr />
+    <form asp-controller="Usuarios" asp-action="Registrar" method="post" id="tablaUsuarios">
+        <div class="form-grid">
+            <div>
+                <label asp-for="CorreoUsuario">Correo electrónico:</label>
+                <input asp-for="CorreoUsuario" type="email" class="campo-formulario" placeholder="Correo electrónico" required />  <!-- Capturar correo de usuario-->
+
+            </div>
+            <div>
+                <label asp-for="Contrasena">Contraseña:</label>
+                <input asp-for="Contrasena" type="password" class="campo-formulario" placeholder="Contraseña" required />  <!-- Capturar contraseña de usuario-->
+            </div>
+            <div>
+                <label asp-for="TipoUsuario">Tipo de usuario:</label>
+                <select asp-for="TipoUsuario" class="form-control" required>
+                    <option value="">Seleccione</option>
+                    <option value="admin">Admin</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Proveedor">Proveedor</option>
+                    <option value="Cliente">Cliente</option>
+                </select>
+            </div>
+            <div>
+                <label asp-for="EmpleadoId">No. de empleado:</label>
+                <input asp-for="EmpleadoId" type="number" class="campo-formulario" placeholder="Código de empleado" required />
+            </div>
+        </div>
+            <div class="acciones-formulario">
+                <!-- Boton guardar cotizacion y abrir el formulario de captura de detalles de productos -->
+                <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar</button>
+                <!-- Boton limpiar el formulario -->
+                <button type="reset" class="btn-borrar"><i class="bi bi-eraser"></i> Guardar</button>
+            </div>        
+    </form>
+</section>

@@ -1,0 +1,409 @@
+﻿@* En esta vista se muestran los datos relevantes del sistema como un Dashboard con metricas de uso 
+    un menu lateral para nevegar a las opciones a las que tiene acceso el administrador
+*@
+<!-- Carga los datos del usuario con sesion iniciada -->
+@{
+    ViewData["Title"] = "Página de administración";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+
+}
+<!-- Incluye la sección de la barra de menus lateral -->
+@section Sidebar {
+
+}
+
+<body>
+    <!-- 1a fila de tarjetas -->
+    <div class="contenedorTarjetas">
+        <div class="tarjeta">
+            <h2 class="titulo"><i class="bi bi-person-check-fill"></i> @User.Identity.Name</h2>
+            <div class="cuerpo">
+                <!-- Metricas de usuario -->
+                <canvas id="grafUsuario" width="150" height="150"></canvas>
+               
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <h2 class="titulo"> <i class="bi bi-graph-up-arrow"></i> SICOVWEB</h2>
+            <div class="cuerpo">
+                <canvas id="grafGeneral" width="150" height="150"></canvas>
+                
+            </div>
+        </div>
+
+        <!-- Alerta productos con stock bajo -->
+        <div class="tarjeta">
+            <h2 class="titulo"> <i class="bi bi-graph-down-arrow"></i> Productos con Stock Bajo</h2>
+            <div class="cuerpo">
+                <canvas id="grafStockBajo" width="150" height="150"></canvas>
+                @* <ul>
+                    @foreach (var producto in ViewBag.ProductosStockBajo)
+                    {
+                        <li><strong>@producto.Nombre: Stock: @producto.StockActual - Stock min: @producto.StockMinimo</strong></li>
+                    }
+                </ul> *@
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Sección de tarjetas con graficos -->
+    <!--Tarjeta grafico 1 -->
+    <div class="contenedorTarjetas">
+        <div class="tarjeta">
+            <h2 class="titulo">Cotizaciones: </h2>
+            <div class="cuerpo">
+                <canvas id="graficoCotTotal" width="150" height="150"></canvas>
+                <p><strong>Total anual: @ViewBag.CotAnual  Total mensual: @ViewBag.CotMensual</strong></p>
+            </div>
+            <div class="pie"><a asp-controller="Cotizaciones" asp-action="Consultar">Ir a cotizaciones</a></div>
+        </div>
+        <!--Tarjeta grafico 2 Productos más vendidos -->
+        <div class="tarjeta">
+            <h2 class="titulo">Productos más vendidos </h2>
+            <div class="cuerpo">
+                <canvas id="graficoProductosVendidos" width="150" height="150"></canvas>
+                <div>
+                    <p>Pasa el cursor para ver el detalle</p>
+                </div>
+            </div>
+            <div class="pie"><a asp-controller="Productos" asp-action="Buscar">Ir a productos</a></div>
+        </div>
+        <!--Tarjeta grafico 3 Productos más rentables -->
+        <div class="tarjeta">
+            <h2 class="titulo">Productos más rentables</h2>
+            <div class="cuerpo">
+                <canvas id="graficoMargenProductos" width="150" height="150"></canvas>
+                <div>
+                    <p>Pasa el cursor para ver el detalle</p>
+                </div>
+            </div>
+            <div class="pie"><a asp-controller="Productos" asp-action="Buscar">Ir a productos</a></div>
+        </div>
+    </div>
+    
+    <!--Tarjeta grafico 4  Clientes con más compras -->
+    <div class="contenedorTarjetas">
+        <div class="tarjeta">
+            <h2 class="titulo">Clientes con más compras</h2>
+            <div class="cuerpo">
+                <canvas id="graficoClientesCompras" width="150" height="150"></canvas>
+                
+            </div>
+            <div class="pie"><a asp-controller="Cotizaciones" asp-action="ListaCotAsignadas">Ir a clientes</a></div>
+        </div>
+        
+        <!--Tarjeta grafico 5 Empleados con más ventas -->
+        <div class="tarjeta">
+            <h2 class="titulo">Empleados con más ventas</h2>
+            <div class="cuerpo">
+                <canvas id="graficoEmpleadosVentas" width="150" height="150"></canvas>
+                
+            </div>
+            <div class="pie"><a asp-controller="Empleados" asp-action="Buscar">Ir a empleados</a></div>
+        </div>
+
+        <!-- Tarjeta Gráfico 6 de barras-->
+        <div class="tarjeta">
+            <h2 class="titulo">Cotizaciones por Mes</h2>
+            <div class="cuerpo">
+                <canvas id="graficoCotizaciones" width="150" height="150"></canvas>
+                
+            </div>
+            <div class="pie"><a asp-controller="Cotizaciones" asp-action="Consultar">Ir a cotizaciones</a></div>
+        </div>
+    </div>
+
+
+    <script>
+        // Forzar recarga si se vuelve a la página usando las flechas
+        window.addEventListener('pageshow', function (event) {
+            // Si la página viene del cache o no hay sesión activa, recargar
+            const loggedIn = '@(User?.Identity?.IsAuthenticated ?? false)'.toLowerCase() === 'true';
+
+            if (event.persisted || !loggedIn) {
+                window.location.reload(true);
+            }
+        });
+
+        // Prevenir caché de manera adicional
+        if (window.performance && window.performance.navigation.type === 2) {
+            // type 2 indica "back/forward navigation"
+            location.reload(true);
+        }
+
+        // También eliminar la página del historial (opcional pero efectivo)
+        history.replaceState(null, document.title, location.href);
+        window.addEventListener("popstate", function () {
+            history.pushState(null, document.title, location.href);
+        });
+    </script>
+
+
+</body>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> @* Biblioteca Chart.js *@
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script> @* Plugin para etiquetas de datos *@
+
+
+    <script>
+        // Gráfico de barras del usuario
+        // Valores enviados desde tu controlador
+        const ventas       = parseInt("@ViewBag?.VentasRealizadas" ?? 0);
+        const totalMes     = parseFloat("@ViewBag?.TotalVendidoMes" ?? 0);
+        const cotTotal     = parseInt("@ViewBag?.CotizacionesTotales" ?? 0);
+        const cotAceptadas = parseInt("@ViewBag?.CotizacionesAceptadas" ?? 0);
+
+        // Plugin para mostrar valores al centro de las barras
+        const mostrarValores = {
+            id: "mostrarValores",
+            afterDatasetsDraw(chart) {
+                const {ctx} = chart;
+                chart.data.datasets.forEach((dataset, i) => {
+                    chart.getDatasetMeta(i).data.forEach((bar, index) => {
+                        const valor = dataset.data[index];
+                        ctx.save();
+                        ctx.fillStyle = "black";
+                        ctx.font = "bold 14px sans-serif";
+                        ctx.textAlign = "center";
+                        ctx.fillText(valor, bar.x, bar.y - 10);
+                        ctx.restore();
+                    });
+                });
+            }
+        };
+
+        // Construir el grafico
+        new Chart(document.getElementById("grafUsuario"), {
+            type: "bar",
+            data: {
+                labels: ["Ventas", "Total Mes ($)", "Cotizaciones", "Aceptadas"],
+                datasets: [{
+                    data: [ventas, totalMes, cotTotal, cotAceptadas],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: "Resumen de Actividad del Usuario" },
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            },
+            plugins: [mostrarValores]
+        });
+    </script>
+
+
+
+    <script>
+        // Grafico de los datos generales del sistema (barras)
+        new Chart(document.getElementById("grafGeneral"), {
+            type: "bar",
+            data: {
+                labels: ["Clientes", "Empleados", "Productos", "Cotizaciones"],
+                datasets: [{
+                    data: [
+                        @ViewBag.TotalClientes,
+                        @ViewBag.TotalEmpleados,
+                        @ViewBag.TotalProductos,
+                        @ViewBag.CotTotal
+                    ],
+                    backgroundColor: ["#0dcaf0", "#6610f2", "#198754", "#fd7e14"],
+                    borderRadius: 8 // opcional, mejora visual
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        color: "white",        // color del texto dentro
+                        anchor: "center",      // centro exacto vertical
+                        align: "center",       // centro exacto horizontal
+                        font: {
+                            size: 16,
+                            weight: "bold"
+                        },
+                        formatter: (value) => value // Muestra el valor numerico
+                    }
+                }
+            },
+            plugins: [ChartDataLabels] // Activar plugin
+        });
+    </script>
+
+    
+    <script>
+        // Gráfico de cotizaciones por mes (barras)
+        const ctx = document.getElementById('graficoCotizaciones').getContext('2d');
+
+        const data = {
+            labels: [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ],
+            datasets: [{
+                label: 'Cotizaciones',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.CotizacionesPorMes)),
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderWidth: 2
+            }]
+        };
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'center',
+                        formatter: function (value) {
+                            return value; 
+                        },
+                        font: {
+                                weight: 'bold'
+                        }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+        });
+    </script>
+    
+    @{
+        var nombres = ((List<Producto>)ViewBag.ProductosStockBajo).Select(p => p.Nombre).ToList();
+        var stockActual = ((List<Producto>)ViewBag.ProductosStockBajo).Select(p => p.StockActual).ToList();
+        var stockMinimo = ((List<Producto>)ViewBag.ProductosStockBajo).Select(p => p.StockMinimo).ToList();
+    }
+    
+    <script>
+        // Pasamos los datos
+        const productosNombres = @Html.Raw(Json.Serialize(nombres));
+        const stockActual      = @Html.Raw(Json.Serialize(stockActual));
+        const stockMinimo      = @Html.Raw(Json.Serialize(stockMinimo));
+
+        // --- Plugin para mostrar valor dentro de la barra ----
+        const valorCentral = {
+            id: "valorCentral",
+            afterDatasetsDraw(chart) {
+                const { ctx } = chart;
+                chart.data.datasets.forEach((dataset, i) => {
+                    chart.getDatasetMeta(i).data.forEach((bar, index) => {
+                        const value = dataset.data[index];
+                        ctx.save();
+                        ctx.fillStyle = "#fff";         // color del texto
+                        ctx.font = "bold 12px sans-serif";
+                        ctx.textAlign = "center";
+                        ctx.fillText(value, bar.x, bar.y + 6); // posición centrada
+                        ctx.restore();
+                    });
+                });
+            }
+        };
+
+        // ---- Render del gráfico ----
+        new Chart(document.getElementById("grafStockBajo"), {
+            type: "bar",
+            data: {
+                labels: productosNombres,
+                datasets: [
+                    { label:"Stock Actual", data:stockActual, backgroundColor:"#1f77b4" },
+                    { label:"Stock Mínimo", data:stockMinimo, backgroundColor:"#ff4136" }
+                ]
+            },
+            options: {
+                responsive:true,
+                plugins:{ legend:{ display:true }},
+                scales:{ y:{ beginAtZero:true }}
+            },
+            plugins:[valorCentral] // <= activa etiquetas en el centro
+        });
+    </script>
+
+
+
+    
+    <script>
+        function crearGrafico(idCanvas, tipo, labels, data) {
+            new Chart(document.getElementById(idCanvas), {
+                type: tipo,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { display: false },   // Quitar la leyenda
+                        datalabels: {                 // Mostrar valores dentro del gráfico
+                            color: "#000",
+                            font: {
+                                weight: "bold",
+                                size: 12
+                            },
+                            formatter: (value, context) => {
+                            const label = context.chart.data.labels[context.dataIndex];
+                            return label + ": \n" + value;
+                        }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]  // activar plugin
+            });
+        }
+    </script>
+    <script>
+        // 1. Cotizaciones (pie)
+        crearGrafico(
+            "graficoCotTotal",
+            "bar",
+            ["Vigentes", "Vencidas", "Asignadas", "Cerradas"],
+            @Html.Raw(Json.Serialize(ViewBag.CotizacionesData))
+        );
+
+        // 2. Productos más vendidos (doughnut)
+        crearGrafico(
+            "graficoProductosVendidos",
+            "line",
+            @Html.Raw(Json.Serialize(ViewBag.ProductosVendidosLabels)),
+            @Html.Raw(Json.Serialize(ViewBag.ProductosVendidosValues))
+        );
+
+        // 3. Margen por producto (doughnut)
+        crearGrafico(
+            "graficoMargenProductos",
+            "polarArea",
+            @Html.Raw(Json.Serialize(ViewBag.ProductosMargenLabels)),
+            @Html.Raw(Json.Serialize(ViewBag.ProductosMargenValues))
+        );
+
+        // 4. Clientes con más compras (pie)
+        crearGrafico(
+            "graficoClientesCompras",
+            "pie",
+            @Html.Raw(Json.Serialize(ViewBag.ClientesLabels)),
+            @Html.Raw(Json.Serialize(ViewBag.ClientesValues))
+        );
+
+        // 5. Empleados con más ventas (pie)
+        crearGrafico(
+            "graficoEmpleadosVentas",
+            "bar",
+            @Html.Raw(Json.Serialize(ViewBag.EmpleadosLabels)),
+            @Html.Raw(Json.Serialize(ViewBag.EmpleadosValues))
+        );
+    </script>
+
+
+
+}

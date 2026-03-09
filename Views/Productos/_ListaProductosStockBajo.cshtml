@@ -1,0 +1,67 @@
+﻿@*
+    Vista Listado de productos con Stock bajo
+*@
+@using SICOVWEB_MCA.Models
+@{
+
+}
+@model IEnumerable<SICOVWEB_MCA.Models.Producto>
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Productos con Stock bajo</h2>
+    </div>
+    <hr />
+    <div class="tabla-container">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Código de producto</th>
+                    <th>Código Proveedor</th>
+                    <th>Razón Social</th>
+                    <th>Nombre</th>
+                    <th>Marca</th>
+                    <th>Descripción</th>
+                    <th>Precio de compra</th>
+                    <th>Precio de venta</th>
+                    <th>Unidades</th>
+                    <th>Margen de ganancia %</th>
+                    <th>Stock Actual</th>
+                    <th>Stock Mínimo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.Id_producto</td>
+                            <!-- Colocar la Razon social del proveedor conociendo su idproveedor -->
+                            <td>@p.Idproveedor</td>
+                            <td>@($"{p.Proveedor.Razon_social}")</td>
+                            <td>@p.Nombre</td>
+                            <td>@p.Marca</td>
+                            <td>@p.Descripcion</td>
+                            <td>@p.Precio_Compra</td>
+                            <td>@p.Precio_Venta</td>
+                            <td>@p.Unidad</td>
+                            <td>@p.Margen %</td>
+                            <td>@p.StockActual</td>
+                            <td>@p.StockMinimo</td>
+                            <td class="acciones">
+                                <a asp-controller="Productos" asp-action="EditarProducto" asp-route-id="@p.Id_producto" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                                <a asp-controller="Productos" asp-action="EliminarProducto" asp-route-id="@p.Id_producto" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');"><i class="bi bi-trash"></i></a>
+                                <a asp-controller="Productos" asp-action="InfoProducto" asp-route-id="@p.Id_producto" class="btn-ver"><i class="bi bi-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="10" class="sin-datos">No se encontraron resultados.</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

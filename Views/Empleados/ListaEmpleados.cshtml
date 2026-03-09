@@ -1,0 +1,128 @@
+﻿@*
+    Vista parcial para mostrar la lista de Empleados registrados en el sistema.
+*@
+@{
+    ViewData["Title"] = "Lista de Empleados";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+@model SICOVWEB_MCA.Helpers.Paginacion<SICOVWEB_MCA.Models.Empleado>
+
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2 class="titulo-seccion">Consulta de Empleados</h2>
+        <a asp-area="" asp-controller="Empleados" asp-action="CrearEmpleado" class="btn-primario">Registrar Empleado</a>
+    </div>
+    <hr />
+    <!-- ====== FILTROS DE BÚSQUEDA ====== -->
+    <form asp-controller="Empleados" asp-action="Buscar" method="get" id="formFiltros" class="filtros">
+        <div class="grid-filtros">
+            <!-- Filtrar por # id -->
+            <div class="filtro-item">
+                <label for="idEmpleado"># Empleado:</label>
+                <input type="text" id="idEmpleado" name="idEmpleado" class="input-filtro" />
+            </div>
+
+            <!-- Filtrar por 1er apellido -->
+            <div class="filtro-item">
+                <label for="apellidoPaterno">Apellido Paterno:</label>
+                <input type="text" id="apellidoPaterno" name="apellidoPaterno" class="input-filtro" />
+            </div>
+
+            <!-- Filtrar por estatus -->
+            <div class="filtro-item">
+                <label for="estatus">Estatus:</label>
+                <select id="estatus" name="estatus" class="input-filtro">
+                    <option value="">-- Todos --</option>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+            </div>
+
+            <!-- Filtrar por fecha de alta -->
+            <div class="filtro-item">
+                <label for="fechaInicio">Fecha inicio:</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="input-filtro" />
+            </div>
+
+            <div class="filtro-item">
+                <label for="fechaFin">Fecha fin:</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="input-filtro" />
+            </div>
+            <div class="contenedor-boton-buscar">
+                <button type="submit" class="btn-buscar">Buscar</button>
+            </div>
+        </div>
+    </form>
+
+    <h2>Lista de Empleados</h2>
+    <hr />
+    <div class="tabla-container">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>No. Empleado</th>
+                    <th>Nombre</th>
+                    <th>Puesto</th>
+                    <th>RFC</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    @* <th>Dirección</th> *@
+                    <th>Estatus</th>
+                    <th>Fecha de Alta</th>
+                    <th>Fecha de Baja</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var e in Model)
+                {
+                    <tr>
+                        <td>@e.Id</td>
+                        <td>@($"{e.Nombre} {e.Apellido_Paterno}, {e.Apellido_Materno}")</td>
+                        <td>@e.Puesto</td>
+                        <td>@e.RFC</td>
+                        <td>@e.Correo</td>
+                        <td>@e.Telefono</td>
+                        @* <td>@($"{e.Calle} {e.Numero}, {e.Colonia}, {e.Localidad}, {e.Estado}, {e.Pais}, CP: {e.CP}")</td> *@
+                        <td>@e.Estatus</td>
+                        <td>@e.Fecha_Alta.ToString("dd-MM-yyyy")</td>
+                        <td>@e.Fecha_Baja?.ToString("dd-MM-yyyy")</td>
+                        <td class="acciones">
+                            <a asp-controller="Empleados" asp-action="Editar" asp-route-id="@e.Id" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                            <a asp-controller="Empleados" asp-action="Eliminar" asp-route-id="@e.Id" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?');"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!-- ====== PAGINACIÓN ====== -->
+
+    <div class="paginacion">
+        @if (Model.TienePaginaAnterior)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-idEmpleado="@ViewBag.Filtros?.idEmpleado"
+               asp-route-apellidoPaterno="@ViewBag.Filtros?.apellidoPaterno"
+               asp-route-estatus="@ViewBag.Filtros?.estatus"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">« Anterior</a>
+        }
+
+        <span>Página @Model.PaginaActual de @Model.TotalPaginas</span>
+
+        @if (Model.TienePaginaSiguiente)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual + 1)"
+               asp-route-idEmpleado="@ViewBag.Filtros?.idEmpleado"
+               asp-route-apellidoPaterno="@ViewBag.Filtros?.apellidoPaterno"
+               asp-route-estatus="@ViewBag.Filtros?.estatus"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">Siguiente »</a>
+        }
+    </div>
+   
+</section>

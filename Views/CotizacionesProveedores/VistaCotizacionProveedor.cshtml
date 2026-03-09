@@ -1,0 +1,49 @@
+﻿@*
+    Vista para visualizar los detalles de una cotización de proveedor específica.
+*@
+@model SICOVWEB_MCA.Models.Cotizacion_proveedor
+@{
+    ViewData["Title"] = "Detalles de Cotización de Proveedor";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+
+<section class="contenedor-principal">
+    <h2 class="titulo-seccion">Detalles de Cotización de Proveedor</h2>
+    <div class="detalles-cotizacion">
+        <h3>Información de la Cotización</h3>
+        <p><strong># Cotización:</strong> @Model.Id_cotizacion</p>
+        <p><strong>Proveedor:</strong> @Model.Proveedor.Razon_social</p>
+        <p><strong>Empleado:</strong> @Model.Empleado.Nombre @Model.Empleado.Apellido_Paterno @Model.Empleado.Apellido_Materno</p>
+        <p><strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy")</p>
+        <p><strong>Estatus:</strong> @Model.Estatus</p>
+        <h3>Productos Cotizados</h3>
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                    <th>T. de entrega(Días)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Detalles)
+                {
+                    <tr>
+                        <td>@item.Nombre_producto</td>
+                        <td>@item.Descripcion</td>
+                        <td>@item.Cantidad</td>
+                        <td>@item.Precio_Unitario.ToString("C")</td>
+                        <td>@item.Subtotal.ToString("C")</td>
+                        <td>@item.Tiempo_Entrega</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h3>Total de la Cotización: @Model.Precio_total.ToString("C")</h3>
+        <a asp-action="Buscar" class="btn-primario">Regresar a la Lista</a>
+    </div>
+</section>
+

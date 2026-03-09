@@ -1,0 +1,101 @@
+﻿@model SICOVWEB_MCA.Models.Empleado
+@{
+    ViewData["Title"] = "Crear Empleado";
+    Layout = "_Layout_Admin";
+    var fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Registro de nuevo empleado</h2>
+        <a asp-controller="Empleados" asp-action="Buscar" class="btn-secundario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <hr />
+    <form asp-controller="Empleados" asp-action="CrearEmpleado" method="post">
+        <!-- Inputs ocultos de asignacion por default -->
+        <input type="hidden" asp-for="Id" value="0" />
+        <input type="hidden" asp-for="Estatus" value="Activo" />
+        <div class="form-grid">
+            <div>
+                <label asp-for="Nombre"></label>
+                <input asp-for="Nombre" class="campo-formulario" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Apellido_Paterno"></label>
+                <input asp-for="Apellido_Paterno" class="campo-formulario" />
+                <span asp-validation-for="Apellido_Paterno" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Apellido_Materno"></label>
+                <input asp-for="Apellido_Materno" class="campo-formulario" />
+                <span asp-validation-for="Apellido_Materno" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Puesto"></label>
+                <input asp-for="Puesto" class="campo-formulario" />
+                <span asp-validation-for="Puesto" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Correo"></label>
+                <input asp-for="Correo" class="campo-formulario" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Telefono"></label>
+                <input asp-for="Telefono" class="campo-formulario" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Calle"></label>
+                <input asp-for="Calle" class="campo-formulario" />
+                <span asp-validation-for="Calle" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Numero"></label>
+                <input asp-for="Numero" class="campo-formulario" />
+                <span asp-validation-for="Numero" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Colonia"></label>
+                <input asp-for="Colonia" class="campo-formulario" />
+                <span asp-validation-for="Colonia" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Localidad"></label>
+                <input asp-for="Localidad" class="campo-formulario" />
+                <span asp-validation-for="Localidad" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Estado"></label>
+                <input asp-for="Estado" class="campo-formulario" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Pais"></label>
+                <input type="text" asp-for="Pais" class="campo-formulario" />
+                <span asp-validation-for="Pais" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="CP"></label>
+                <input type="text" asp-for="CP" class="campo-formulario" />
+                <span asp-validation-for="CP" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="RFC"></label>
+                <input type="text" asp-for="RFC" class="campo-formulario" />
+                <span asp-validation-for="RFC" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Fecha_Alta"></label>
+                <input asp-for="Fecha_Alta" type="date" value="@fechaActual" class="campo-formulario" readonly />
+                <span asp-validation-for="Fecha_Alta" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="acciones-formulario">
+            <!-- Boton guardar  -->
+            <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar</button>
+            <!-- Boton limpiar el formulario -->
+            <button type="reset" class="btn-borrar"><i class="bi bi-eraser"></i> Limpiar</button>
+        </div>
+    </form>
+</section>

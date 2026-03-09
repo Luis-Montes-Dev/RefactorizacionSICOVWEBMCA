@@ -1,0 +1,129 @@
+﻿@*
+    Formulario para crear nuevo cliente en el sistema.
+*@
+@model SICOVWEB_MCA.Models.Cliente
+
+@{
+    ViewData["Title"] = "Crear Cliente";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    var fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
+}
+<head>
+    <meta charset="utf-8" />
+
+    <title>Formulario Nuevo Cliente</title>
+
+    <script src="~/js/jquery-3.6.0.min.js"></script>
+</head>
+
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Registrar nuevo cliente</h2>
+        <a asp-controller="Clientes" asp-action="Buscar" class="btn-primario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <hr />
+    <form asp-controller="Clientes" asp-action="CrearCliente" method="post">
+        <input type="hidden" asp-for="Id_cliente" value="0" />
+        <input type="hidden" asp-for="Estatus" value="Activo" />
+        <div class="form-grid">
+            <div>
+                <label asp-for="Razon_Social"></label>
+                <input type="text" asp-for="Razon_Social" class="campo-formulario" />
+                <span asp-validation-for="Razon_Social" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Rfc"></label>
+                <input type="text" asp-for="Rfc" class="campo-formulario" />
+                <span asp-validation-for="Rfc" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Correo"></label>
+                <input type="text" asp-for="Correo" class="campo-formulario" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Telefono"></label>
+                <input type="text" asp-for="Telefono" class="campo-formulario" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Calle"></label>
+                <input type="text" asp-for="Calle" class="campo-formulario" />
+                <span asp-validation-for="Calle" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Numero"></label>
+                <input type="text" asp-for="Numero" class="campo-formulario" />
+                <span asp-validation-for="Numero" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Colonia"></label>
+                <input type="text" asp-for="Colonia" class="campo-formulario" />
+                <span asp-validation-for="Colonia" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Localidad"></label>
+                <input type="text" asp-for="Localidad" class="campo-formulario" />
+                <span asp-validation-for="Localidad" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Estado"></label>
+                <input type="text" asp-for="Estado" class="campo-formulario" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Pais"></label>
+                <input type="text" asp-for="Pais" class="campo-formulario" />
+                <span asp-validation-for="Pais" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="CP"></label>
+                <input type="text" asp-for="CP" class="campo-formulario" />
+                <span asp-validation-for="CP" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Condicion_Pago"></label>
+                <select asp-for="Condicion_Pago" class="form-control">
+                    <option value="">Seleccione una Condición de Pago</option>
+                    <option value="Contado">Contado</option>
+                    <option value="Crédito 15 días">Crédito 15 días</option>
+                    <option value="Crédito 30 días">Crédito 30 días</option>
+                    <option value="Crédito 60 días">Crédito 60 días</option>
+                </select>
+                <span asp-validation-for="Condicion_Pago" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Tipo"></label>
+                <select asp-for="Tipo" class="form-control">
+                    <option value="">Seleccione</option>
+                    <option value="moral">Moral</option>
+                    <option value="fisica">Física</option>
+                </select>
+                <span asp-validation-for="Tipo" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Fecha_Alta"></label>
+                <input asp-for="Fecha_Alta" type="date" value="@fechaActual" class="campo-formulario" readonly />
+                <span asp-validation-for="Fecha_Alta" class="text-danger"></span>
+            </div>
+
+            <div class="acciones-formulario">
+                <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar</button>
+                <button type="reset" class="btn-borrar"><i class="bi bi-eraser"></i> Limpiar</button>
+            </div>
+        </div>
+    </form>
+</section>

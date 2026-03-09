@@ -1,0 +1,44 @@
+﻿@*
+    Vista creada para editar un usuario registrado en el sistema
+*@
+@model SICOVWEB_MCA.Models.Usuario
+@{
+    ViewData["Title"] = "Editar Usuario";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Editar Usuario</h2>
+        <a asp-controller="Usuarios" asp-action="Buscar" class="btn-secundario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <hr />
+    <form asp-controller="Usuarios" asp-action="Editar" method="post" >
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Contrasena" /> <!-- Mantener la contraseña oculta para no modificarla -->
+        <div class="form-grid">
+            <div>
+                <label asp-for="EmpleadoId">Código de empleado</label>
+                <input asp-for="EmpleadoId" class="form-control" />
+                <span asp-validation-for="EmpleadoId" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="CorreoUsuario"></label>
+                <input asp-for="CorreoUsuario" class="form-control" />
+                <span asp-validation-for="CorreoUsuario" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="TipoUsuario"></label>
+                <select asp-for="TipoUsuario" class="form-control">
+                    <option value="">Seleccione un tipo</option>
+                    <option value="admin">Administrador</option>
+                    <option value="normal">Normal</option>
+                </select>
+                <span asp-validation-for="TipoUsuario" class="text-danger"></span>
+            </div>
+        </div>
+        <br />
+        <div class="acciones-formulario">
+            <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar cambios</button>
+        </div>
+    </form>
+</section>

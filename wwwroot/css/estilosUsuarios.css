@@ -1,0 +1,229 @@
+﻿/* Aqui se deben colocar los estilos de las paginas que visualiza el usuario
+    Incluye:
+    Sidebar
+    Sidebar menu items
+    contenido
+    dashboard items
+*/
+
+/* Fondo semitransparente para el contenido */
+.contenido {
+    background-color: rgba(255, 255, 255, 0.8); /*Blanco con transparencia */
+    width: 80%;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para la barra lateral*/
+.sidebar {
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #051139;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-y: auto; /* ✅ Permite desplazamiento vertical */
+    overflow-x: hidden; /* ✅ Evita scroll horizontal */
+    padding-top: 0;
+    scrollbar-width: thin; /* Estilo de scrollbar para Firefox */
+    scrollbar-color: #888 #051139; /* color del thumb y el fondo */
+}
+
+    /* Scrollbar para navegadores basados en WebKit (Chrome, Edge, Safari) */
+    .sidebar::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background-color: #666;
+        border-radius: 4px;
+    }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background-color: #999;
+        }
+
+/* Para que el contenido principal se ajuste correctamente */
+.content {
+    margin-left: 250px;
+    padding: 0;
+    overflow-x: hidden; /* Previene desbordamiento horizontal */
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+        position: absolute;
+        z-index: 1000;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+}
+
+/*Estilos previamente definidos*/
+    .sidebar h2 {
+        font-family: Arial, Helvetica, sans-serif;
+        text-decoration: underline;
+        color: white;
+    }
+
+
+    .sidebar a {
+        display: block;
+        color: white;
+        padding: 10px 15px;
+        text-decoration: none;
+    }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+    .sidebar img {
+        width: 100%;
+        height: auto;
+        margin-top: 0px;
+        margin-bottom: 20px;
+        padding-top: 0px;
+
+    }
+
+.content {
+    margin-left: 250px;
+    padding: 0px;    
+}
+
+#LogoHeader {
+    width: 40%;
+    height: 150px;
+    margin: 10px 0;
+    display: flex;
+    margin: 0 auto;
+}
+
+/* Estilos para los mensajes informativos popup tipo toast*/
+
+.toast {
+    position: relative;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    color: red;
+    border: 1px solid red;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+    .toast.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .toast.success {
+        background-color: #28a745;
+    }
+
+    .toast.error {
+        background-color: red;
+        font-size: 16px;
+        color: orangered;
+    }
+
+    .toast.info {
+        background-color: #007bff;
+    }
+
+    /* Estilos para formularios */
+/* Fondo modal y centrado */
+.modal-fondo {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Contenido del formulario */
+.modal-contenido {
+    background-color: white; /* Fondo oscuro */
+    color: black; /* Letras blancas */
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+    /* Inputs de texto */
+    .modal-contenido input[type="email"],
+    .modal-contenido input[type="password"],
+    .modal-contenido input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        background-color: #333;
+        color: white;
+    }
+
+    /* Etiquetas */
+    .modal-contenido label {
+        display: block;
+        font-size: 18px;
+        margin-top: 15px;
+        text-align: left;
+        color: #f0f0f0;
+    }
+
+
+/* Botón de cerrar */
+.cerrar {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background-color: transparent;
+    color: white;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilos para paginacion */
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+    .paginacion a {
+        padding: 6px 12px;
+        background-color: #004aad;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+        .paginacion a:hover {
+            background-color: #007bff;
+        }

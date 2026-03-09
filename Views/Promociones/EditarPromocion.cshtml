@@ -1,0 +1,55 @@
+﻿@*
+    Vista para editar una promoción
+*@
+@model SICOVWEB_MCA.Models.Promocion
+@{
+    ViewData["Title"]="Editar Promoción";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<section class="contenedor-principal">
+<div class="header-seccion">
+        <h2>Editar Promoción</h2>
+        <a asp-controller="Promociones" asp-action="Buscar" class="btn-primario"><i class="bi bi-arrow-left"></i> Regresar</a>
+</div>
+<hr />   
+    <form asp-controller="Promociones" asp-action="EditarPromocion" method="post">
+        <input type="hidden" asp-for="Id_promocion"/>
+        <div class="form-grid">
+            <div>
+                <label asp-for="Id_Campania">Campaña</label>
+                <input type="hidden" asp-for="Id_Campania" class="campo-formulario" />
+                <input type="text" value="@Model.Campania?.Nombre" class="campo-formulario" readonly />
+            </div>
+            <div>
+                <label asp-for="Nombre"></label>
+                <input type="text" asp-for="Nombre" class="campo-formulario" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Descripcion"></label>
+                <textarea type="text" asp-for="Descripcion" class="campo-formulario"></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Descuento"></label>
+                <input type="number" asp-for="Descuento" class="campo-formulario" />
+                <span asp-validation-for="Descuento" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Fecha_Inicio"></label>
+                <input type="date" asp-for="Fecha_Inicio" class="campo-formulario" />
+                <span asp-validation-for="Fecha_Inicio" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Fecha_Fin"></label>
+                <input type="date" asp-for="Fecha_Fin" class="campo-formulario" />
+                <span asp-validation-for="Fecha_Fin" class="text-danger"></span>
+            </div>
+        </div>
+        <!-- Botonera -->
+        <div class="acciones-formulario">
+            <!-- Boton guardar  -->
+            <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar cambios</button>            
+        </div>
+    </form>    
+</section>

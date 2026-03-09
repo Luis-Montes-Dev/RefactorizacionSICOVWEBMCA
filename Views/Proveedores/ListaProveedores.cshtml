@@ -1,0 +1,133 @@
+﻿@*
+    Vista parcial para mostrar la lista de Proveedores registrados en el sistema.
+*@
+@{
+    ViewData["Title"] = "Lista de Proveedores";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+@using SICOVWEB_MCA.Models
+
+@model SICOVWEB_MCA.Helpers.Paginacion<SICOVWEB_MCA.Models.Proveedor>
+
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2 class="titulo-seccion">Consulta de Proveedores</h2>    
+        <a asp-area="" asp-controller="Proveedores" asp-action="CrearProveedor" class="btn-primario">Registrar Proveedor</a>
+    </div>
+    <hr />
+    <!-- ====== FILTROS DE BÚSQUEDA ====== -->
+    <form asp-controller="Proveedores" asp-action="Buscar" method="get" id="formFiltros" class="filtros">
+        <div class="grid-filtros">
+        <!-- Filtrar por # id contacto -->
+        <div class="filtro-item">
+            <label for="id">No. Proveedor:</label>
+            <input type="text" id="id" name="id" class="input-filtro" />
+        </div>
+
+        <!-- Filtrar por Razon social de cliente -->
+        <div class="filtro-item">
+            <label for="razonSocial">Proveedor:</label>
+            <input type="text" id="razonSocial" name="razonSocial" class="input-filtro" />
+        </div>
+        <!-- Filtrar por Estatus -->
+        <div class="filtro-item">
+            <label for="estatus">Estatus:</label>
+            <select id="estatus" name="estatus" class="input-filtro">
+                <option value="">--Seleccione--</option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>
+        </div>
+        <!-- Filtrar por fecha de alta -->
+        <div class="filtro-item">
+            <label for="fechaInicio">Fecha inicio:</label>
+            <input type="date" id="fechaInicio" name="fechaInicio" class="input-filtro" />
+        </div>
+
+        <div class="filtro-item">
+            <label for="fechaFin">Fecha fin:</label>
+            <input type="date" id="fechaFin" name="fechaFin" class="input-filtro" />
+        </div>
+            <div class="contenedor-boton-buscar">
+        <button type="submit" class="btn-buscar">Buscar</button>
+        </div>
+        </div>
+    </form>
+
+<h2>Lista de Proveedores</h2>
+<hr />
+<div class="tabla-container">
+<table id="tabla">
+    <thead>
+        <tr>
+            <th>No. Proveedor</th>
+            <th>Razón Social</th>
+            <th>RFC</th>            
+            <th>Correo</th>
+            <th>Teléfono</th>
+            @* <th>Dirección</th>
+            <th>Condición de pago</th>
+            <th>Estatus</th>    *@         
+            <th>Fecha de Alta</th>
+            <th>Fecha de Baja</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.IdProveedor</td>
+                        <td>@p.Razon_social</td>
+                        <td>@p.Rfc</td>
+                        <td>@p.Correo</td>
+                        <td>@p.Telefono</td>
+                        @* <td>@($"{p.Calle} {p.Numero}, {p.Colonia}, {p.Localidad}, {p.Estado}, {p.Pais}, CP: {p.CP}")</td>
+                        <td>@p.Condicion_pago</td>
+                        <td>@p.Estatus</td> *@
+                        <td>@p.Fecha_alta.ToString("yyyy-MM-dd")</td>
+                        <td>@p.Fecha_baja?.ToString("yyyy-MM-dd")</td>
+                        <td class="acciones">
+                            <a asp-controller="Proveedores" asp-action="Editar" asp-route-id="@p.IdProveedor" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                            <a asp-controller="Proveedores" asp-action="Eliminar" asp-route-id="@p.IdProveedor" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar este proveedor?');"><i class="bi bi-trash"></i></a>
+                                <a asp-controller="Proveedores" asp-action="ReporteProveedores" asp-route-id="@p.IdProveedor" class="btn-editar"><i class="bi bi-info-square"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="10" class="sin-datos">No se encontraron resultados.</td></tr>
+            }
+    </tbody>
+</table>
+    </div>
+    <!-- ====== PAGINACIÓN ====== -->
+    <div class="paginacion">
+        @if (Model.TienePaginaAnterior)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-id="@ViewBag.Filtros?.id"
+               asp-route-razonSocial="@ViewBag.Filtros?.razonSocial"
+               asp-route-estatus="@ViewBag.Filtros?.estatus"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">« Anterior</a>
+        }
+
+        <span>Página @Model.PaginaActual de @Model.TotalPaginas</span>
+
+        @if (Model.TienePaginaSiguiente)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual + 1)"
+               asp-route-id="@ViewBag.Filtros?.id"
+               asp-route-razonSocial="@ViewBag.Filtros?.razonSocial"
+               asp-route-estatus="@ViewBag.Filtros?.estatus"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">Siguiente »</a>
+        }
+    </div>
+</section>

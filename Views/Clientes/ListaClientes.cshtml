@@ -1,0 +1,131 @@
+﻿@*
+    Vista parcial para mostrar la lista de clientes registrados en el sistema.
+*@
+@{
+    ViewData["Title"] = "Lista de Clientes";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+@using SICOVWEB_MCA.Models
+
+@model SICOVWEB_MCA.Helpers.Paginacion<SICOVWEB_MCA.Models.Cliente>
+
+<section class="contenedor-principal">
+    <div class="header-seccion">
+    <h2>Consulta de Clientes</h2>
+        <a asp-area="" asp-controller="Clientes" asp-action="CrearCliente" class="btn-primario">Registrar Cliente</a>
+        <a asp-area="" asp-controller="Importador" asp-action="ImportadorExcel" class="btn-primario">Importar Excel</a>
+    </div>
+    <hr />  
+    <!-- ====== FILTROS DE BÚSQUEDA ====== -->
+    <form asp-controller="Clientes" asp-action="Buscar" method="get" id="formFiltros" class="filtros">
+        <div class="grid-filtros">
+        <!-- Filtrar por # id -->
+        <div class="filtro-item">
+            <label for="idCliente">No. Cliente:</label>
+            <input type="text" id="idCliente" name="idCliente" class="input-filtro" />
+        </div>
+
+        <!-- Filtrar por Razon social -->
+        <div class="filtro-item">
+            <label for="razonSocial">Razón social:</label>
+            <input type="text" id="razonSocial" name="razonSocial" class="input-filtro" />
+        </div>
+
+        <!-- Filtrar por estatus -->
+        <div class="filtro-item">
+            <label for="tipo">Tipo:</label>
+            <select id="tipo" name="tipo" class="input-filtro">
+                <option value="">-- Todos --</option>
+                <option value="moral">Moral</option>
+                <option value="fisica">Física</option>
+            </select>
+        </div>
+
+        <!-- Filtrar por fecha de alta -->
+        <div class="filtro-item">
+            <label for="fechaInicio">Fecha inicio:</label>
+            <input type="date" id="fechaInicio" name="fechaInicio" class="input-filtro" />
+        </div>
+
+        <div class="filtro-item">
+            <label for="fechaFin">Fecha fin:</label>
+            <input type="date" id="fechaFin" name="fechaFin" class="input-filtro" />
+        </div>
+            <div class="contenedor-boton-buscar">
+        <button type="submit" class="btn-buscar">Buscar</button>
+        </div>
+        </div>
+    </form>
+
+<h2>Lista de clientes</h2>
+<hr />
+<div class="tabla-container">
+<table id="tabla">
+    <thead>
+        <tr>
+            <th>No. Cliente</th>
+            <th>Razón Social</th>
+            <th>RFC</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            @* <th>Dirección</th>            
+            <th>Condición de Pago</th>             
+            <th>Tipo</th> *@
+            <th>Fecha de Alta</th>
+            <th>Fecha de Baja</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Id_cliente</td>
+                <td>@c.Razon_Social</td>
+                <td>@c.Rfc</td>
+                <td>@c.Correo</td>
+                <td>@c.Telefono</td>
+                @* <td>@($"{c.Calle} {c.Numero}, {c.Colonia}, {c.Localidad}, {c.Estado}, {c.Pais}, CP: {c.CP}")</td>                
+                <td>@c.Condicion_Pago</td> 
+                <td>@c.Tipo</td> *@
+                <td>@c.Fecha_Alta.ToString("dd-MM-yyyy")</td>
+                <td>@c.Fecha_Baja?.ToString("dd-MM-yyyy")</td>
+                <td class="acciones">
+                        <a asp-controller="Clientes" asp-action="Editar" asp-route-id="@c.Id_cliente" class="btn-editar"><i class="bi bi-pencil-square"></i></a>
+                        <a asp-controller="Clientes" asp-action="Eliminar" asp-route-id="@c.Id_cliente" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?');"><i class="bi bi-trash"></i></a>
+                        <a asp-controller="Clientes" asp-action="ReporteCliente" asp-route-id="@c.Id_cliente" class="btn-editar"><i class="bi bi-info-square"></i></a>
+                </td>                
+            </tr>
+        }
+    </tbody>
+</table>
+    </div>
+    <!-- ====== PAGINACIÓN ====== -->
+    <div class="paginacion">
+        @if (Model.TienePaginaAnterior)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual - 1)"
+               asp-route-idCliente="@ViewBag.Filtros?.idCliente"
+               asp-route-razonSocial="@ViewBag.Filtros?.razonSocial"
+               asp-route-tipo="@ViewBag.Filtros?.tipo"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">« Anterior</a>
+        }
+
+        <span>Página @Model.PaginaActual de @Model.TotalPaginas</span>
+
+        @if (Model.TienePaginaSiguiente)
+        {
+            <a asp-action="@ViewContext.RouteData.Values["action"]"
+               asp-route-pagina="@(Model.PaginaActual + 1)"
+               asp-route-idCliente="@ViewBag.Filtros?.idCliente"
+               asp-route-razonSocial="@ViewBag.Filtros?.razonSocial"
+               asp-route-tipo="@ViewBag.Filtros?.tipo"
+               asp-route-fechaInicio="@ViewBag.Filtros?.fechaInicio"
+               asp-route-fechaFin="@ViewBag.Filtros?.fechaFin">Siguiente »</a>
+        }
+    </div>
+    <br />
+<br />
+</section>

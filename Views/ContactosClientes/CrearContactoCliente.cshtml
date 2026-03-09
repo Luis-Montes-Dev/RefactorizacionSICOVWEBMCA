@@ -1,0 +1,95 @@
+﻿@*
+    Vista para agregar un contacto de cliente
+*@
+
+@model SICOVWEB_MCA.Models.Contacto_cliente
+
+@{
+    ViewData["Title"] = "Registrar Contacto Cliente";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    var fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+<head>
+    <meta charset="utf-8" />
+    
+    <title>Formulario Nuevo Contacto de Cliente</title>
+    
+    <script src="~/js/jquery-3.6.0.min.js"></script>
+</head>
+<h2>Registrar nuevo contacto de cliente</h2>
+<hr />
+<div>
+    <!-- FORMULARIO NUEVO CONTACTO DE CLIENTE -->
+    <form asp-controller="ContactosClientes" asp-action="CrearContactoCliente" method="post">
+        <input type="hidden" asp-for="Id_contacto" value="0" />
+        <table id="tabla">
+            <tr>            
+                <td>
+                    <label asp-for="Id_Cliente">Empresa</label>
+                </td>
+                <td>
+                    <!--Crear un select que toma los datos de los clientes de la lista en el controlador -->
+                    <select asp-for="Id_Cliente" asp-items="@(new SelectList(ViewBag.listaClientes,"Id_cliente","Razon_Social"))" class="form-control">
+                        <option value=""> Seleccionar empresa</option>
+                    </select>
+                    <span asp-validation-for="Id_Cliente" class="text-danger"></span>
+                </td>
+            
+                <td><label asp-for="Nombre"></label></td>
+                <td>
+                    <input type="text" asp-for="Nombre" class="campo-formulario" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label asp-for="Apellido_paterno"></label></td>
+                <td>
+                    <input type="text" asp-for="Apellido_paterno" class="campo-formulario" />
+                    <span asp-validation-for="Apellido_paterno" class="text-danger"></span>
+                </td>
+                <td><label asp-for="Apellido_materno"></label></td>
+                <td>
+                    <input type="text" asp-for="Apellido_materno" class="campo-formulario" />
+                    <span asp-validation-for="Apellido_materno" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label asp-for="Cargo"></label></td>
+                <td>
+                    <input type="text" asp-for="Cargo" class="campo-formulario" />
+                    <span asp-validation-for="Cargo" class="text-danger"></span>
+                </td>
+                <td><label asp-for="Correo"></label></td>
+                <td>
+                    <input type="text" asp-for="Correo" class="campo-formulario" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label asp-for="Telefono"></label></td>
+                <td>
+                    <input type="text" asp-for="Telefono" class="campo-formulario" />
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                </td>                
+            </tr>
+            <tr>
+                <td><label asp-for="Fecha_alta"></label></td>
+                <td>
+                    <input asp-for="Fecha_alta" type="date" value="@fechaActual" class="campo-formulario" readonly />
+                    <span asp-validation-for="Fecha_alta" class="text-danger"></span>
+                </td>                
+            </tr>
+        </table>
+        <br />
+        <div style="display:flex; justify-content: left">
+
+            <!-- Boton guardar  -->
+            <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i></button><br />
+
+            <!-- Boton limpiar el formulario -->
+            <button type="reset" class="btn-borrar"><i class="bi bi-eraser"></i></button>
+
+        </div>
+    </form>
+</div>

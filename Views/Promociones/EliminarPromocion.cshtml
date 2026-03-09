@@ -1,0 +1,50 @@
+﻿@*
+    Vista para eliminar una promoción
+*@
+@model SICOVWEB_MCA.Models.Promocion
+@{
+    ViewData["Title"] = "Eliminar Promoción";
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Eliminar Promoción</h2>
+        <a asp-controller="Promociones" asp-action="ListaPromociones" class="btn-primario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <hr />
+
+    <form asp-controller="Promociones" asp-action="EliminarPromocion" method="post">
+        <input type="hidden" asp-for="Id_promocion" />
+        <div class="form-grid">
+            <div>
+                <label asp-for="Id_Campania">Campaña</label>
+                <input type="hidden" asp-for="Id_Campania" class="campo-formulario" disabled />
+                <input type="text" value="@Model.Campania?.Nombre" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Nombre"></label>
+                <input type="text" asp-for="Nombre" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Descripcion"></label>
+                <textarea type="text" asp-for="Descripcion" class="campo-formulario" disabled></textarea>
+            </div>
+            <div>
+                <label asp-for="Descuento"></label>
+                <input type="number" asp-for="Descuento" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Fecha_Inicio"></label>
+                <input type="date" asp-for="Fecha_Inicio" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Fecha_Fin"></label>
+                <input type="date" asp-for="Fecha_Fin" class="campo-formulario" disabled />
+            </div>
+        </div>
+        <div class="acciones-formulario">
+            <!-- Boton guardar  -->
+            <button type="submit" class="btn-primario"><i class="bi bi-trash"></i> Eliminar</button>
+        </div>
+    </form>
+</section>

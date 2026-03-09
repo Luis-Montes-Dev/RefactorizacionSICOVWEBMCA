@@ -1,0 +1,170 @@
+﻿@model SICOVWEB_MCA.Models.Venta
+
+@{
+    Layout = null;
+    
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"> <!-- Libreria de iconos -->
+    <title>Nota de Venta</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        img {
+            background-color: white;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .btn-primario {
+            padding: 10px 20px;
+            background-color: darkblue; /*#007ACC ,#105e93 , #ec7063*/
+            font-family: 'Segoe UI', sans-serif;
+            text-decoration: none;
+            color: #ecf0f1;
+            border: none;
+            font-size: 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: inline-block;
+            margin: 0px 5px;
+        }
+
+            .btn-primario:hover {
+                background-color: #005fa3;
+            }
+    </style>
+</head>
+<body>
+    <div>
+        <img src="~/images/Logos3.jpg" alt="Logos" width="1000" height="200">
+    </div>
+    <h2>Nota de venta: @Model.Id_venta</h2>
+    <p><strong>Fecha:</strong> @Model.Fecha_Venta.ToString("dd/MM/yyyy")</p>
+    <p><strong>Empresa:</strong> @Model.Cliente?.Razon_Social</p>
+    <p><strong>Correo:</strong> @Model.Cliente?.Correo</p>
+    <p><strong>Teléfono:</strong> @Model.Cliente?.Telefono</p>
+    <!-- Colocar datos del Contacto_cliente -->
+    <p>
+        <strong>Persona de contacto:</strong>
+        @(Model.Contacto != null ? $"{Model.Contacto.Nombre} {Model.Contacto.Apellido_paterno} {Model.Contacto.Apellido_materno}           Tel: {Model.Contacto.Telefono}       Correo: {Model.Contacto.Correo}" : "Sin contacto")
+    </p>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>PART</th>
+                <th>Producto</th>
+                <th>Marca</th>
+                <th>DESCRIPCIÓN</th>
+                <th>UNIDAD</th>
+                <th>CANT</th>
+                <th>TIEMPO ENTREGA</th>
+                <th>PRECIO UNITARIO</th>
+                <th>IMPORTE FINAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                try
+                {
+                    int index = 1;
+                    //foreach (var item in Model.Detalles)
+                    foreach (var item in Model.DetalleVentas ?? Enumerable.Empty<SICOVWEB_MCA.Models.DetalleVenta>())
+                    {
+                        <tr>
+                            <td>@index</td>
+                            @if (@item.Unidad == "Svc" || @item.IdProducto == 0)
+                            {
+                                <td>@item.Producto?.Nombre</td>
+                                <td>@item.Producto?.Marca</td>
+                                <td>@item.Descripcion</td>
+                                <td>@item.Unidad</td>
+
+                            }
+                            else
+                            {
+                                <td>@item.Producto?.Nombre</td>
+                                <td>@item.Producto?.Marca</td>
+                                <td>@item.Producto?.Descripcion</td>
+                                <td>@item.Producto?.Unidad</td>
+                            }
+                            <td>@item.Cantidad</td>
+                            <td>@item.TiempoEntrega</td>
+                            <td>$@item.PrecioUnitario.ToString("N2")</td>
+                            <td>$@item.Subtotal.ToString("N2")</td>
+                        </tr>
+                        index++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Excepción: " + ex.Message + ex.InnerException);
+
+                }
+
+            }
+        </tbody>
+    </table>
+    <!-- Si tiene descuento mostrar las cantidades del descuento -->
+    @{
+        if (Model.Descuento > 0)
+        {
+            <p class="text-right">Precio Original: $@Model.MontoTotal.ToString("N2")</p>
+            <p class="text-right">Descuento (@Model.Descuento%): -$@Model?.MontoDescuento</p>
+        }
+    }
+    <p class="text-right">Sub-Total: $@Model.Subtotal</p>
+    <p class="text-right">IVA 16%: $@Model.IVA</p>
+    <h3 class="text-right">Total @Model.TipoMoneda: $@Model.TotalConIva</h3>
+
+    <p><strong>Fecha de entrega estimada:</strong> @Model.Fecha_Entrega.ToString()</p>
+    <p><strong>Pago:</strong> @Model?.CondicionPago</p>
+    
+    <br>
+    <p><strong>Elaboró:</strong> @($"{Model?.Empleado.Nombre} {Model?.Empleado.Apellido_Paterno} {Model?.Empleado.Apellido_Materno}") </p>
+    <p><strong>Teléfono:</strong> @Model.Empleado.Telefono</p>
+    <p><strong>Correo:</strong> @Model.Empleado.Correo</p>
+    <p><strong>Comentarios:</strong> @Model?.Observaciones</p>
+
+    <div style="display:flex; justify-content: center">
+        <a href="@Url.Action("ListaVentas", "Ventas", new { id = Model.Id_venta })" class="btn-primario no-print"><i class="bi bi-arrow-return-left"></i></a>
+        <a href="@Url.Action("DescargarPDF", "Ventas", new { id = Model.Id_venta })" class="btn-primario no-print"><i class="bi bi-download"></i> PDF</a>
+
+    </div>
+</body>
+</html>
+

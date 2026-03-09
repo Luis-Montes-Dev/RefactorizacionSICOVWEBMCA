@@ -1,0 +1,92 @@
+﻿@model SICOVWEB_MCA.Models.Empleado
+@{
+    ViewData["Title"] = "Editar Empleado";
+    Layout = "_Layout_Admin";
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Eliminar empleado</h2>
+        <a asp-controller="Empleados" asp-action="Buscar" class="btn-secundario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+<hr />
+    <form asp-controller="Empleados" asp-action="Eliminar" method="post">
+        <!-- Inputs ocultos de asignacion por default -->
+        <input type="hidden" asp-for="Id" />       
+        <div class="form-grid">
+            <div>
+                <label asp-for="Nombre"></label>
+                <input asp-for="Nombre" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Apellido_Paterno"></label>
+                <input asp-for="Apellido_Paterno" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Apellido_Materno"></label>
+                <input asp-for="Apellido_Materno" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Puesto"></label>
+                <input asp-for="Puesto" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Correo"></label>
+                <input asp-for="Correo" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Telefono"></label>
+                <input asp-for="Telefono" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Calle"></label>
+                <input asp-for="Calle" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Numero"></label>
+                <input asp-for="Numero" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Colonia"></label>
+                <input asp-for="Colonia" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Localidad"></label>
+                <input asp-for="Localidad" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Estado"></label>
+                <input asp-for="Estado" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Pais"></label>
+                <input type="text" asp-for="Pais" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="CP"></label>
+                <input type="text" asp-for="CP" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="RFC"></label>
+                <input type="text" asp-for="RFC" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Estatus"></label>
+                <input type="text" asp-for="Estatus" class="campo-formulario" disabled />
+            </div>
+            <div>
+                <label asp-for="Fecha_Alta"></label>
+                <input asp-for="Fecha_Alta" type="date" class="campo-formulario" readonly />
+            </div>
+            <div>
+                <label asp-for="Fecha_Baja"></label>
+                <input asp-for="Fecha_Baja" type="date" class="campo-formulario" disabled />
+            </div>                                                          
+        </div>
+        <br />
+        <!-- Botonera -->
+        <div class="acciones-formulario">
+            <!-- Boton guardar  -->
+            <button type="submit" class="btn-primario"><i class="bi bi-trash"></i> Eliminar</button>
+        </div>
+    </form>
+</section>

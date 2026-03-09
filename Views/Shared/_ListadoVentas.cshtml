@@ -1,0 +1,69 @@
+﻿@*
+    Vista parcial que muestre el listado de ventas al buscar por cliente o id
+*@
+@using SICOVWEB_MCA.Models
+@{
+    
+}
+<head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" /> <!-- Llama libreria de mensajes alert TOASTR-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+</head>
+@if (TempData["MensajeAlertExito"] != null)
+{
+    <script>
+        toastr.success('@TempData["MensajeAlertExito"]');
+    </script>
+}
+
+@if (TempData["MensajeAlertFalla"] != null)
+{
+    <script>
+        toastr.error('@TempData["MensajeAlertFalla"]');
+    </script>
+}
+
+<h2>Resultados de la búsqueda</h2>
+<hr />
+<table id="tabla">
+    <thead>
+        <tr>
+            <th>No. Orden</th>
+            <th>Empresa</th>
+            <th>Vendedor</th>
+            <th>Fecha venta</th>
+            <th>Fecha entrega</th>
+            <th>Estatus</th>
+            <th>Promoción</th>
+            <th>Descuento</th>
+            <th>Total</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Permite recibir una lista vacia sin mostrar nada -->
+        @foreach (var v in Model ?? Enumerable.Empty<Venta>())
+        // Permite recorrer la lista de ventas que se envía desde el controlador
+        {
+            <tr>
+                <td>@v.Id_venta</td>
+                <td>@($"{v.Cliente?.Razon_Social}")</td>
+                <td>@($"{v.Empleado?.Nombre} {v.Empleado?.Apellido_Paterno} {v.Empleado?.Apellido_Materno}")</td>
+                <td>@v.Fecha_Venta.ToString("yyyy-MM-dd")</td>
+                <td>@v.Fecha_Entrega.ToString("yyyy-MM-dd")</td>
+                <td>@v.Estatus</td>
+                <td>@v.Id_Promocion</td>
+                <td>@v.Descuento</td>
+                <td>@v.TotalConIva</td>
+                <td>
+                    <a asp-controller="Ventas" asp-action="EditarVenta" asp-route-id="@v.Id_venta" class="btn-editar"><i class="bi bi-pencil-square">Editar</i></a>
+                    <a asp-controller="Ventas" asp-action="EliminarVenta" asp-route-id="@v.Id_venta" class="btn-borrar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta venta?');"><i class="bi bi-trash"></i>Borrar</a>
+                    <a asp-controller="Ventas" asp-action="VistaVentaPorId" asp-route-id="@v.Id_venta" class="btn-ver"><i class="bi bi-eye"></i>Ver</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<br />

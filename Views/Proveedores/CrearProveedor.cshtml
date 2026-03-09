@@ -1,0 +1,98 @@
+﻿@model SICOVWEB_MCA.Models.Proveedor
+@{
+    ViewData["Title"] = "Crear Proveedor";
+    Layout = "_Layout_Admin";
+    var fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
+}
+<section class="contenedor-principal">
+    <div class="header-seccion">
+        <h2>Registro de nuevo proveedor</h2>
+        <a asp-controller="Proveedores" asp-action="ListaProveedores" class="btn-secundario"><i class="bi bi-arrow-left"></i> Regresar</a>
+    </div>
+    <hr />
+
+    <form asp-controller="Proveedores" asp-action="CrearProveedor" method="post">
+        <!-- Inputs ocultos de asignacion por default -->
+        <input type="hidden" asp-for="IdProveedor" value="0" />
+        <input type="hidden" asp-for="Estatus" value="Activo" />
+
+        <div class="form-grid">
+            <div>
+                <label asp-for="Razon_social"></label>
+                <input asp-for="Razon_social" class="campo-formulario" />
+                <span asp-validation-for="Razon_social" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Rfc"></label>
+                <input asp-for="Rfc" class="campo-formulario" />
+                <span asp-validation-for="Rfc" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Correo"></label>
+                <input asp-for="Correo" class="campo-formulario" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Telefono"></label>
+                <input asp-for="Telefono" class="campo-formulario" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Calle"></label>
+                <input asp-for="Calle" class="campo-formulario" />
+                <span asp-validation-for="Calle" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Numero"></label>
+                <input asp-for="Numero" class="campo-formulario" />
+                <span asp-validation-for="Numero" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Colonia"></label>
+                <input asp-for="Colonia" class="campo-formulario" />
+                <span asp-validation-for="Colonia" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Localidad"></label>
+                <input asp-for="Localidad" class="campo-formulario" />
+                <span asp-validation-for="Localidad" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Estado"></label>
+                <input asp-for="Estado" class="campo-formulario" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Pais"></label>
+                <input type="text" asp-for="Pais" class="campo-formulario" />
+                <span asp-validation-for="Pais" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="CP"></label>
+                <input type="text" asp-for="CP" class="campo-formulario" />
+                <span asp-validation-for="CP" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Condicion_pago"></label>
+                <select asp-for="Condicion_pago" class="campo-formulario">
+                    <option value="">-- Seleccione una opción --</option>
+                    <option value="Contado">Contado</option>
+                    <option value="Crédito 15 días">Crédito 15 días</option>
+                    <option value="Crédito 30 días">Crédito 30 días</option>
+                    <option value="Crédito 60 días">Crédito 60 días</option>
+                </select>
+                <span asp-validation-for="Condicion_pago" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Fecha_alta"></label>
+                <input asp-for="Fecha_alta" type="date" value="@fechaActual" class="campo-formulario" readonly />
+                <span asp-validation-for="Fecha_alta" class="text-danger"></span>
+            </div>
+        </div>
+        <!-- BOTONES DE ACCIÓN -->
+        <div class="acciones-formulario">
+            <button type="submit" class="btn-primario"><i class="bi bi-floppy"></i> Guardar</button>
+            <button type="reset" class="btn-borrar"><i class="bi bi-eraser"></i> Limpiar</button>
+        </div>
+    </form>
+</section>
