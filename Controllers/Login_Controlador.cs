@@ -30,10 +30,11 @@ namespace SICOVWEB_MCA.Controllers
         public int UsuarioActivoEmpleadoId { get; set; }
 
         private readonly ApplicationDbContext _context;//Permiso de solo lectura al contexto DB
-
-        public Login_Controlador(ApplicationDbContext context)//Constructor usa el contexto como parametro
+        private readonly IConfiguration _configuration; // Permiso de solo lectura a la configuración
+        public Login_Controlador(ApplicationDbContext context , IConfiguration configuration)//Constructor usa el contexto como parametro
         {
             _context = context;
+            _configuration = configuration;
         }
 
         [HttpGet]        
@@ -83,13 +84,13 @@ namespace SICOVWEB_MCA.Controllers
                 string token = Request.Form["g-recaptcha-response"];
 
                 //Verificar el captcha descomentar antes de publicar en Azurewebsites
-                //bool captchaValido = await VerificarCaptchaAsync(token);
-                //if (!captchaValido)
-                //{
-                //    //ViewBag.ErrorCaptcha = "Captcha inválido. Por favor, inténtelo de nuevo.";
-                //    TempData["MensajeAlertFalla"] = "Captcha inválido. Por favor, inténtelo de nuevo.";
-                //    return View("~/Views/Home/Index.cshtml");
-                //}
+                bool captchaValido = await VerificarCaptchaAsync(token);
+                if (!captchaValido)
+                {
+                    //ViewBag.ErrorCaptcha = "Captcha inválido. Por favor, inténtelo de nuevo.";
+                    TempData["MensajeAlertFalla"] = "Captcha inválido. Por favor, inténtelo de nuevo.";
+                    return View("~/Views/Home/Index.cshtml");
+                }
 
                 // Verificar las credenciales del usuario
                 var usuario = _context.Usuarios.FirstOrDefault(u => u.CorreoUsuario == CorreoUsuario);
@@ -284,9 +285,9 @@ namespace SICOVWEB_MCA.Controllers
         // Método para verificar el captcha
         private async Task<bool> VerificarCaptchaAsync(string token)
         {
-            var secretKey = "6LcZqC8rAAAAAClqvyr2IoUX2faiT_KF3RK8mWyb"; // Clave secreta de reCAPTCHA v2 para AzurewebSites
-            //var secretKey = "6LcejywrAAAAABMkK2e7Wn8QNHF_LaaH9n8o7FOL"; // Clave secreta de reCAPTCHA v2 para localhost
-            var httpClient = new HttpClient();
+            // Obtener la clave secreta de reCAPTCHA v2 desde secrets          
+            var secretKey = _configuration.GetSection("ReCaptcha").GetValue<string>("SecretKey");  // Clave secreta de reCAPTCHA v2 para localhost
+                var httpClient = new HttpClient();
             var response = await httpClient.PostAsync(
                 $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={token}", // URL de verificación del captcha
                 null);

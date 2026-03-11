@@ -1,4 +1,6 @@
-﻿@{
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,11 +14,6 @@
 
        <img src="~/images/logo_empresa.png" alt="Logo Empresa" class="logo" />
 
-        @* <div>
-            <div>
-                <img src="~/images/LOGO_SICOVWEB_CIRCULO.png" id="LogoHeader" style="width: 100%; height: 120px;" />
-            </div>           
-        </div> *@
         <br>
         <button class="btn-sesion" onclick="mostrarLogin()" style="">Iniciar Sesión <i class="bi bi-box-arrow-in-right"></i></button> <!-- Boton para mostrar formulario login-->
     </div>
@@ -33,13 +30,12 @@
 
                <label for="password">Contraseña:</label>  
                <input type="password" id="Contrasena" name="Contrasena" required /> <!-- Caja de texto para ingresar contraseña de usuario -->  
+                               
+                <!-- Google reCAPTCHA v2 para Localhost obtener de IConfiguration -->
 
-                <!-- Google reCAPTCHA v2 para Azure web sites-->
-                <div class="g-recaptcha" data-sitekey="6LcZqC8rAAAAAII58lt6-aImLb96YG6kk1Y5fyzO"></div>
-                <!-- Google reCAPTCHA v2 para Localhost -->
-                @* <div class="g-recaptcha" data-sitekey="6LcejywrAAAAAIu7QLELpEEA5bvR4mdFvOBtmMEp"></div>    *@             
+                <div class="g-recaptcha" data-sitekey="@Configuration["ReCaptcha:SiteKey"]"></div>
 
-                <button type="submit" id="ingresar" class="btn-primario">Ingresar</button> <!-- Boton ingresar -->
+                <button type="submit" id="ingresar" class="btn-primario">Ingresar</button> 
                 
                <!-- Para llamar mensajes tipo toast -->
                @section Scripts {

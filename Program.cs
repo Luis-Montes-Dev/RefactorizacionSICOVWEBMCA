@@ -6,7 +6,8 @@ using Rotativa.AspNetCore;
 using SICOVWEB_MCA.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
+// Agregar secretos de usuario
+builder.Configuration.AddUserSecrets<Program>();
 // Configurar licencia de QuestPDF
 QuestPDF.Settings.License = LicenseType.Community;
 
